@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Form Submission</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        .form-container h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+        .form-container .status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #ff5722;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Submit Your Details</h1>
+    <input type="text" id="name" placeholder="Enter your name" required>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    <input type="text" id="address" placeholder="Enter your address" required>
+    <input type="text" id="phone" placeholder="Enter your phone number" required>
+    <input type="text" id="comments" placeholder="Enter your comments" required>
+    <button onclick="submitForm()">Submit</button>
+    <div class="status" id="status"></div>
+</div>
+
+<script>
+    // GSAP animation on page load
+    gsap.from(".form-container", { opacity: 0, y: -50, duration: 1 });
+
+    // Function to submit the form data
+    function submitForm() {
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let address = document.getElementById("address").value;
+        let phone = document.getElementById("phone").value;
+        let comments = document.getElementById("comments").value;
+
+        // Regular expression for validating email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        // Regular expression for validating phone number (only digits allowed)
+        const phoneRegex = /^[0-9]+$/;
+
+        // Checking if all fields are filled
+        if (name && email && address && phone && comments) {
+            // Validate email
+            if (!emailRegex.test(email)) {
+                document.getElementById("status").textContent = "Please enter a valid email address.";
+                return;
+            }
+
+            // Validate phone number (only digits allowed)
+            if (!phoneRegex.test(phone)) {
+                document.getElementById("status").textContent = "Phone number should only contain digits.";
+                return;
+            }
+
+            document.getElementById("status").textContent = "Submitting...";
+
+            // Send the data using fetch() to the Google Form
+            fetch('https://docs.google.com/forms/d/e/1FAIpQLSe2244548ieZ_9HIqQHMF7pQBDBijdWHJR1FGGzWH8NoLzvCQ/formResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'entry.2005620554': name,
+                    'entry.1045781291': email,
+                    'entry.1065046570': address,
+                    'entry.1166974658': phone,
+                    'entry.839337160': comments
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("status").textContent = "Form submitted successfully!";
+                    gsap.to(".form-container", { scale: 1.05, duration: 0.3, repeat: 1, yoyo: true });
+                } else {
+                    // Silenced error logging
+                    document.getElementById("status").textContent = "Submission failed. Please try again.";
+                }
+            })
+            .catch(error => {
+                // Silenced error logging: No errors are shown in the UI
+                console.error('Error occurred:', error);
+            });
+        } else {
+            document.getElementById("status").textContent = "Please fill in all fields.";
+        }
+    }
+</script>
+
+</body>
+</html>
