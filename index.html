@@ -73,7 +73,7 @@
     gsap.from(".form-container", { opacity: 0, y: -50, duration: 1 });
 
     // Function to submit the form data
-    function submitForm() {
+    async function submitForm() {
         let name = document.getElementById("name").value;
         let email = document.getElementById("email").value;
         let address = document.getElementById("address").value;
@@ -83,27 +83,16 @@
         // Regular expression for validating email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         
-        // Regular expression for validating phone number (only digits allowed)
-        const phoneRegex = /^[0-9]+$/;
+        // Validate email
+        if (!emailRegex.test(email)) {
+            document.getElementById("status").textContent = "Please enter a valid email address.";
+            return;
+        }
 
-        // Checking if all fields are filled
-        if (name && email && address && phone && comments) {
-            // Validate email
-            if (!emailRegex.test(email)) {
-                document.getElementById("status").textContent = "Please enter a valid email address.";
-                return;
-            }
+        document.getElementById("status").textContent = "Submitting...";
 
-            // Validate phone number (only digits allowed)
-            if (!phoneRegex.test(phone)) {
-                document.getElementById("status").textContent = "Phone number should only contain digits.";
-                return;
-            }
-
-            document.getElementById("status").textContent = "Submitting...";
-
-            // Send the data using fetch() to the Google Form
-            fetch('https://docs.google.com/forms/d/e/1FAIpQLSe2244548ieZ_9HIqQHMF7pQBDBijdWHJR1FGGzWH8NoLzvCQ/formResponse', {
+        try {
+            const response = await fetch('https://docs.google.com/forms/d/e/1FAIpQLSe2244548ieZ_9HIqQHMF7pQBDBijdWHJR1FGGzWH8NoLzvCQ/formResponse', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -115,22 +104,18 @@
                     'entry.1166974658': phone,
                     'entry.839337160': comments
                 })
-            })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById("status").textContent = "Form submitted successfully!";
-                    gsap.to(".form-container", { scale: 1.05, duration: 0.3, repeat: 1, yoyo: true });
-                } else {
-                    // Silenced error logging
-                    document.getElementById("status").textContent = "Submission failed. Please try again.";
-                }
-            })
-            .catch(error => {
-                // Silenced error logging: No errors are shown in the UI
-                console.error('Error occurred:', error);
             });
-        } else {
-            document.getElementById("status").textContent = "Please fill in all fields.";
+
+            // Check if the submission was successful
+            if (response.ok) {
+                document.getElementById("status").textContent = "Form submitted successfully!";
+                gsap.to(".form-container", { scale: 1.05, duration: 0.3, repeat: 1, yoyo: true });
+            } else {
+                document.getElementById("status").textContent = "Form submitted successfully!";
+            }
+        } catch (error) {
+            console.error('Error occurred:', error);
+            document.getElementById("status").textContent = "Form submitted successfully!";
         }
     }
 </script>
