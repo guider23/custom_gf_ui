@@ -1,0 +1,359 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Form Submission</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Form Title */
+        .form-container h1 {
+            color: #1F2937;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        /* Input Fields */
+        .form-container .input-group {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: #F9FAFB;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-container input:focus {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            outline: none;
+        }
+
+        .form-container input:valid {
+            border-color: #10B981;
+        }
+
+        .form-container input.invalid {
+            border-color: #EF4444;
+            animation: shake 0.3s;
+        }
+
+        /* Input Labels */
+        .form-container label {
+            position: absolute;
+            left: 16px;
+            top: 14px;
+            color: #6B7280;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+
+        .form-container input:focus + label,
+        .form-container input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 12px;
+            font-size: 0.75rem;
+            color: #3B82F6;
+            background: white;
+            padding: 0 4px;
+        }
+
+        /* Submit Button */
+        .form-container button {
+            background: linear-gradient(90deg, #3B82F6 0%, #2563EB 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .form-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .form-container button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #ffffff;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .form-container button.loading .spinner {
+            display: block;
+        }
+
+        .form-container button.loading span {
+            visibility: hidden;
+        }
+
+        /* Status Message */
+        .status {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .status.show {
+            opacity: 1;
+        }
+
+        .status.success {
+            color: #10B981;
+        }
+
+        .status.error {
+            color: #EF4444;
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-container h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-container button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Submit Your Details</h1>
+    <div class="input-group">
+        <input type="text" id="name" placeholder=" " required>
+        <label for="name">Full Name</label>
+    </div>
+    <div class="input-group">
+        <input type="email" id="email" placeholder=" " required>
+        <label for="email">Email Address</label>
+    </div>
+    <div class="input-group">
+        <input type="text" id="address" placeholder=" " required>
+        <label for="address">Address</label>
+    </div>
+    <div class="input-group">
+        <input type="tel" id="phone" placeholder=" " required pattern="[0-9]{10,}">
+        <label for="phone">Phone Number</label>
+    </div>
+    <div class="input-group">
+        <input type="text" id="comments" placeholder=" " required>
+        <label for="comments">Comments</label>
+    </div>
+    <button onclick="submitForm()"><span>Submit</span><div class="spinner"></div></button>
+    <div class="status" id="status"></div>
+</div>
+
+<script>
+    // GSAP animations on page load
+    gsap.from(".form-container", { opacity: 0, y: -50, duration: 1, ease: "power3.out" });
+    gsap.from(".input-group", { opacity: 0, y: 20, duration: 0.8, stagger: 0.1, delay: 0.2 });
+
+    async function submitForm() {
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const address = document.getElementById("address");
+        const phone = document.getElementById("phone");
+        const comments = document.getElementById("comments");
+        const status = document.getElementById("status");
+        const button = document.querySelector("button");
+
+        // Reset previous states
+        status.classList.remove("success", "error", "show");
+        [name, email, address, phone, comments].forEach(input => input.classList.remove("invalid"));
+
+        // Validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[0-9]{10,}$/;
+        let isValid = true;
+
+        if (!name.value.trim()) {
+            name.classList.add("invalid");
+            isValid = false;
+        }
+        if (!emailRegex.test(email.value)) {
+            email.classList.add("invalid");
+            isValid = false;
+        }
+        if (!address.value.trim()) {
+            address.classList.add("invalid");
+            isValid = false;
+        }
+        if (!phoneRegex.test(phone.value)) {
+            phone.classList.add("invalid");
+            isValid = false;
+        }
+        if (!comments.value.trim()) {
+            comments.classList.add("invalid");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            status.textContent = "Please fill all fields correctly.";
+            status.classList.add("error", "show");
+            return;
+        }
+
+        // Show loading state
+        button.disabled = true;
+        button.classList.add("loading");
+        status.textContent = "Submitting...";
+        status.classList.add("show", "error");
+
+        try {
+            const response = await fetch('https://docs.google.com/forms/d/e/1FAIpQLSe2244548ieZ_9HIqQHMF7pQBDBijdWHJR1FGGzWH8NoLzvCQ/formResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'entry.2005620554': name.value,
+                    'entry.1045781291': email.value,
+                    'entry.1065046570': address.value,
+                    'entry.1166974658': phone.value,
+                    'entry.839337160': comments.value
+                })
+            });
+
+            if (response.ok) {
+                status.textContent = "Form submitted successfully!";
+                status.classList.remove("error");
+                status.classList.add("success", "show");
+                gsap.to(".form-container", { scale: 1.05, duration: 0.3, repeat: 1, yoyo: true });
+                
+                // Reset form
+                [name, email, address, phone, comments].forEach(input => input.value = "");
+            } else {
+                status.textContent = "Form submission failed. Please try again.";
+                status.classList.add("error", "show");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            status.textContent = "Error occurred. Please try again later.";
+            status.classList.add("error", "show");
+        } finally {
+            button.disabled = false;
+            button.classList.remove("loading");
+        }
+    }
+</script>
+
+</body>
+</html>

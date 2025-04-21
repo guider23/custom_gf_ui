@@ -1,0 +1,472 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaporwave Form Submission</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Varela Round', sans-serif;
+            background: linear-gradient(180deg, #FF69B4 0%, #00CED1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background Elements */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><line x1="0" y1="0" x2="100" y2="0" stroke="rgba(255,105,180,0.3)" stroke-width="1"/></svg>') repeat;
+            animation: gridMove 20s linear infinite;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(transparent, transparent 4px, rgba(0, 0, 0, 0.1) 4px, rgba(0, 0, 0, 0.1) 5px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .palm-trees {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><path d="M20,80 C30,60 40,60 50,80 C60,60 70,60 80,80 C90,60 100,60 110,80 C120,60 130,60 140,80 C150,60 160,60 170,80" fill="none" stroke="rgba(255,105,180,0.5)" stroke-width="2"/><rect x="20" y="80" width="2" height="20" fill="rgba(255,105,180,0.5)"/><rect x="50" y="80" width="2" height="20" fill="rgba(255,105,180,0.5)"/><rect x="80" y="80" width="2" height="20" fill="rgba(255,105,180,0.5)"/><rect x="110" y="80" width="2" height="20" fill="rgba(255,105,180,0.5)"/><rect x="140" y="80" width="2" height="20" fill="rgba(255,105,180,0.5)"/><rect x="170" y="80" width="2" height="20" fill="rgba(255,105,180,0.5)"/></svg>') repeat-x bottom;
+            animation: sway 5s ease-in-out infinite;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.5), 0 0 60px rgba(0, 206, 209, 0.3);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: glitch 2s infinite;
+        }
+
+        /* Form Title */
+        .form-container h1 {
+            color: #FFFFFF;
+            margin-bottom: 2.5rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #FF69B4, 0 0 20px #00CED1;
+        }
+
+        /* Input Groups */
+        .input-group {
+            position: relative;
+            margin: 1.5rem 0;
+            transform: translateY(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .input-group:hover {
+            transform: translateY(0);
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .form-container input:focus {
+            outline: none;
+            box-shadow: 0 0 25px rgba(0, 206, 209, 0.7), 0 0 40px rgba(255, 105, 180, 0.5);
+        }
+
+        .form-container input:valid {
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);
+        }
+
+        .form-container input.invalid {
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+            animation: shake 0.3s;
+        }
+
+        /* Input Labels */
+        .form-container label {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+        }
+
+        .form-container input:focus + label,
+        .form-container input:not(:placeholder-shown) + label {
+            top: -12px;
+            left: 12px;
+            font-size: 0.8rem;
+            color: #00CED1;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0 6px;
+            border-radius: 5px;
+        }
+
+        /* Submit Button */
+        .form-container button {
+            background: linear-gradient(45deg, #FF69B4, #00CED1);
+            color: #FFFFFF;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .form-container button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 206, 209, 0.7);
+        }
+
+        .form-container button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        /* Loading Animation */
+        .spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 4px solid #FFFFFF;
+            border-top: 4px solid #FF69B4;
+            border-right: 4px solid #00CED1;
+            border-radius: 50%;
+            animation: spin 1s ease-in-out infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .form-container button.loading .spinner {
+            display: block;
+        }
+
+        .form-container button.loading span {
+            visibility: hidden;
+        }
+
+        /* Status Message */
+        .status {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            opacity: 0;
+            text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+            transition: opacity 0.3s ease;
+        }
+
+        .status.show {
+            opacity: 1;
+        }
+
+        .status.success {
+            color: #00FF00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+        }
+
+        .status.error {
+            color: #FF0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+
+        /* Animations */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-1px, 1px); }
+            80% { transform: translate(1px, -1px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-20px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes ripple {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 2rem;
+            }
+
+            .form-container h1 {
+                font-size: 1.4rem;
+            }
+
+            .form-container button {
+                font-size: 0.9rem;
+            }
+
+            .palm-trees {
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="background"></div>
+<div class="palm-trees"></div>
+<div class="scanlines"></div>
+
+<div class="form-container">
+    <h1>Vaporwave Data Hub</h1>
+    <div class="input-group">
+        <input type="text" id="name" placeholder=" " required>
+        <label for="name">User Alias</label>
+    </div>
+    <div class="input-group">
+        <input type="email" id="email" placeholder=" " required>
+        <label for="email">E-Mail Signal</label>
+    </div>
+    <div class="input-group">
+        <input type="text" id="address" placeholder=" " required>
+        <label for="address">Geo Coordinates</label>
+    </div>
+    <div class="input-group">
+        <input type="tel" id="phone" placeholder=" " required pattern="[0-9]{10,}">
+        <label for="phone">Comm Link</label>
+    </div>
+    <div class="input-group">
+        <input type="text" id="comments" placeholder=" " required>
+        <label for="comments">Data Vibes</label>
+    </div>
+    <button onclick="submitForm()"><span>Upload to Grid</span><div class="spinner"></div></button>
+    <div class="status" id="status"></div>
+</div>
+
+<script>
+    // GSAP Animations
+    gsap.from(".form-container", { opacity: 0, y: 100, duration: 1.5, ease: "back.out(1.7)" });
+    gsap.from(".input-group", { opacity: 0, scale: 0.8, duration: 1, stagger: 0.2, delay: 0.5 });
+    gsap.to(".form-container", { boxShadow: "0 0 40px rgba(255, 105, 180, 0.7)", duration: 2, repeat: -1, yoyo: true });
+
+    // Ripple Effect on Button
+    document.querySelector("button").addEventListener("click", function(e) {
+        if (!this.classList.contains("loading")) {
+            const ripple = document.createElement("span");
+            ripple.classList.add("ripple");
+            const rect = this.getBoundingClientRect();
+            ripple.style.left = e.clientX - rect.left + "px";
+            ripple.style.top = e.clientY - rect.top + "px";
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+            // Optional synthwave sound
+            // new Audio('https://assets.codepen.io/127738/click.wav').play();
+        }
+    });
+
+    // Form Submission
+    async function submitForm() {
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const address = document.getElementById("address");
+        const phone = document.getElementById("phone");
+        const comments = document.getElementById("comments");
+        const status = document.getElementById("status");
+        const button = document.querySelector("button");
+
+        // Reset states
+        status.classList.remove("success", "error", "show");
+        [name, email, address, phone, comments].forEach(input => input.classList.remove("invalid"));
+
+        // Validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[0-9]{10,}$/;
+        let isValid = true;
+
+        if (!name.value.trim()) {
+            name.classList.add("invalid");
+            isValid = false;
+        }
+        if (!emailRegex.test(email.value)) {
+            email.classList.add("invalid");
+            isValid = false;
+        }
+        if (!address.value.trim()) {
+            address.classList.add("invalid");
+            isValid = false;
+        }
+        if (!phoneRegex.test(phone.value)) {
+            phone.classList.add("invalid");
+            isValid = false;
+        }
+        if (!comments.value.trim()) {
+            comments.classList.add("invalid");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            status.textContent = "Invalid data vibes detected.";
+            status.classList.add("error", "show");
+            // Optional sound effect
+            // new Audio('https://assets.codepen.io/127738/error.wav').play();
+            return;
+        }
+
+        // Loading state
+        button.disabled = true;
+        button.classList.add("loading");
+        status.textContent = "Uploading to grid...";
+        status.classList.add("show", "error");
+
+        try {
+            const response = await fetch('https://docs.google.com/forms/d/e/1FAIpQLSe2244548ieZ_9HIqQHMF7pQBDBijdWHJR1FGGzWH8NoLzvCQ/formResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'entry.2005620554': name.value,
+                    'entry.1045781291': email.value,
+                    'entry.1065046570': address.value,
+                    'entry.1166974658': phone.value,
+                    'entry.839337160': comments.value
+                })
+            });
+
+            if (response.ok) {
+                status.textContent = "Data synced to grid!";
+                status.classList.remove("error");
+                status.classList.add("success", "show");
+                gsap.to(".form-container", { scale: 1.1, duration: 0.4, repeat: 1, yoyo: true });
+                // Optional sound effect
+                // new Audio('https://assets.codepen.io/127738/success.wav').play();
+                
+                // Reset form
+                [name, email, address, phone, comments].forEach(input => input.value = "");
+            } else {
+                status.textContent = "Grid sync failed. Retry upload.";
+                status.classList.add("error", "show");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            status.textContent = "Critical sync error.";
+            status.classList.add("error", "show");
+        } finally {
+            button.disabled = false;
+            button.classList.remove("loading");
+        }
+    }
+</script>
+
+</body>
+</html>
