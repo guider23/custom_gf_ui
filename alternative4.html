@@ -1,0 +1,482 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Form Submission</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #0B0A2A;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Galaxy Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1C1B4D 0%, #0B0A2A 70%);
+            z-index: -1;
+        }
+
+        /* Stars and Nebula */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="10" cy="10" r="1" fill="white" opacity="0.8"/><circle cx="50" cy="50" r="1.5" fill="white" opacity="0.6"/><circle cx="90" cy="90" r="1" fill="white" opacity="0.7"/></svg>') repeat;
+            animation: twinkle 5s infinite;
+        }
+
+        .nebula {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(138, 43, 226, 0.2) 0%, transparent 50%), 
+                        radial-gradient(circle at 70% 70%, rgba(0, 255, 255, 0.2) 0%, transparent 50%);
+            animation: nebulaShift 20s infinite linear;
+        }
+
+        /* Orbiting Planets */
+        .planets {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .planet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #8A2BE2 0%, #00CED1 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Form Title */
+        .form-container h1 {
+            color: #FFFFFF;
+            margin-bottom: 2.5rem;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Input Groups */
+        .input-group {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .form-container input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+
+        .form-container input:valid {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .form-container input.invalid {
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            animation: shake 0.3s;
+        }
+
+        /* Comet Trail Effect */
+        .form-container input:hover {
+            background: linear-gradient(90deg, rgba(0, 255, 255, 0.1), rgba(138, 43, 226, 0.1));
+        }
+
+        /* Input Labels */
+        .form-container label {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+
+        .form-container input:focus + label,
+        .form-container input:not(:placeholder-shown) + label {
+            top: -12px;
+            left: 12px;
+            font-size: 0.8rem;
+            color: #00CED1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0 6px;
+            border-radius: 5px;
+        }
+
+        /* Submit Button */
+        .form-container button {
+            background: linear-gradient(45deg, #00CED1, #8A2BE2);
+            color: #FFFFFF;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .form-container button:hover {
+            box-shadow: 0 0 25px rgba(138, 43, 226, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .form-container button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Starburst Effect */
+        .form-container button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: starburst 2s infinite;
+        }
+
+        /* Loading Animation */
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #FFFFFF;
+            border-top: 3px solid #00CED1;
+            border-right: 3px solid #8A2BE2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .form-container button.loading .spinner {
+            display: block;
+        }
+
+        .form-container button.loading span {
+            visibility: hidden;
+        }
+
+        /* Status Message */
+        .status {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            opacity: 0;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+            transition: opacity 0.3s ease;
+        }
+
+        .status.show {
+            opacity: 1;
+        }
+
+        .status.success {
+            color: #00FF00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .status.error {
+            color: #FF0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes nebulaShift {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes starburst {
+            0% { width: 0; height: 0; opacity: 0.5; }
+            50% { width: 200px; height: 200px; opacity: 0; }
+            100% { width: 0; height: 0; opacity: 0; }
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 2rem;
+            }
+
+            .form-container h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-container button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="background">
+    <div class="stars"></div>
+    <div class="nebula"></div>
+    <div class="planets">
+        <div class="planet" style="top: 10%; left: 20%; animation: orbit 30s linear infinite;"></div>
+        <div class="planet" style="top: 80%; left: 70%; animation: orbit 20s linear infinite reverse;"></div>
+    </div>
+</div>
+
+<div class="form-container">
+    <h1>Galactic Data Relay</h1>
+    <div class="input-group">
+        <input type="text" id="name" placeholder=" " required>
+        <label for="name">Pilot ID</label>
+    </div>
+    <div class=" perguntou">
+        <input type="email" id="email" placeholder=" " required>
+        <label for="email">Comm Signal</label>
+    </div>
+    <div class="input-group">
+        <input type="text" id="address" placeholder=" " required>
+        <label for="address">Stellar Coordinates</label>
+    </div>
+    <div class="input-group">
+        <input type="tel" id="phone" placeholder=" " required pattern="[0-9]{10,}">
+        <label for="phone">Transponder Code</label>
+    </div>
+    <div class="input-group">
+        <input type="text" id="comments" placeholder=" " required>
+        <label for="comments">Mission Log</label>
+    </div>
+    <button onclick="submitForm()"><span>Send to Starbase</span><div class="spinner"></div></button>
+    <div class="status" id="status"></div>
+</div>
+
+<script>
+    // GSAP Animations
+    gsap.from(".form-container", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)" });
+    gsap.from(".input-group", { opacity: 0, y: 30, duration: 1, stagger: 0.2, delay: 0.5 });
+    gsap.to(".form-container", { boxShadow: "0 0 40px rgba(138, 43, 226, 0.5)", duration: 3, repeat: -1, yoyo: true });
+
+    // Form Submission
+    async function submitForm() {
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const address = document.getElementById("address");
+        const phone = document.getElementById("phone");
+        const comments = document.getElementById("comments");
+        const status = document.getElementById("status");
+        const button = document.querySelector("button");
+
+        // Reset states
+        status.classList.remove("success", "error", "show");
+        [name, email, address, phone, comments].forEach(input => input.classList.remove("invalid"));
+
+        // Validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[0-9]{10,}$/;
+        let isValid = true;
+
+        if (!name.value.trim()) {
+            name.classList.add("invalid");
+            isValid = false;
+        }
+        if (!emailRegex.test(email.value)) {
+            email.classList.add("invalid");
+            isValid = false;
+        }
+        if (!address.value.trim()) {
+            address.classList.add("invalid");
+            isValid = false;
+        }
+        if (!phoneRegex.test(phone.value)) {
+            phone.classList.add("invalid");
+            isValid = false;
+        }
+        if (!comments.value.trim()) {
+            comments.classList.add("invalid");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            status.textContent = "Invalid data detected.";
+            status.classList.add("error", "show");
+            // Optional sound effect
+            // new Audio('https://assets.codepen.io/127738/error.mp3').play();
+            return;
+        }
+
+        // Loading state
+        button.disabled = true;
+        button.classList.add("loading");
+        status.textContent = "Transmitting to Starbase...";
+        status.classList.add("show", "error");
+
+        try {
+            const response = await fetch('https://docs.google.com/forms/d/e/1FAIpQLSe2244548ieZ_9HIqQHMF7pQBDBijdWHJR1FGGzWH8NoLzvCQ/formResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'entry.2005620554': name.value,
+                    'entry.1045781291': email.value,
+                    'entry.1065046570': address.value,
+                    'entry.1166974658': phone.value,
+                    'entry.839337160': comments.value
+                })
+            });
+
+            if (response.ok) {
+                status.textContent = "Data relayed successfully!";
+                status.classList.remove("error");
+                status.classList.add("success", "show");
+                gsap.to(".form-container", { scale: 1.05, duration: 0.3, repeat: 1, yoyo: true });
+                // Optional sound effect
+                // new Audio('https://assets.codepen.io/127738/success.mp3').play();
+                
+                // Reset form
+                [name, email, address, phone, comments].forEach(input => input.value = "");
+            } else {
+                status.textContent = "Relay failed. Retry transmission.";
+                status.classList.add("error", "show");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            status.textContent = "Critical relay error.";
+            status.classList.add("error", "show");
+        } finally {
+            button.disabled = false;
+            button.classList.remove("loading");
+        }
+    }
+</script>
+
+</body>
+</html>
