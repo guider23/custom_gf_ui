@@ -150,9 +150,7 @@ This project is licensed under the **MIT License**.
 
 ## 🙌 Credits
 
-Crafted by **Siddarth**  
-Passionate about building intuitive, visually stunning web apps.
-
+Crafted by **Siddarth** 
 ---
 
 ⭐ **Star this repo** if you found it useful!  
