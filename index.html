@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" href="https://guider23.github.io/custom_gf_ui/favicon.png">
-
-<title> Color Mat </title>
+    <link rel="icon" href="https://guider23.github.io/custom_gf_ui/favicon.png">
+    <title>Color Mat</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Form Submission Demo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -207,7 +205,7 @@
             visibility: hidden;
         }
         .status {
-            margin-top: 1.5rem;
+            margin-top: 1. Environmental: none;
             font-size: 0.9rem;
             font-weight: 500;
             color: #FFFFFF;
@@ -655,7 +653,6 @@
     } catch (e) {
       console.log('Error parsing FB_PUBLIC_LOAD_DATA_:', e.message);
     }
-
     const results = [];
     document.querySelectorAll('input, select, textarea').forEach(element => {
       const entryName = element.getAttribute('name') || '';
@@ -667,7 +664,6 @@
         }
       }
     });
-
     console.log(JSON.stringify(results, null, 2));
   }, 3000); 
 })();
@@ -691,20 +687,20 @@
             </li>
             <li><strong>Step 5: Deploy and Share</strong>
                 <ul>
-                    <li>If the form fields look correct, click the "Deploy" button to host your form on Vercel.</li>
+                    <li>If the form fields look correct, click the "Deploy" button to host your form on GitHub Pages.</li>
                     <li>Once deployed, view the deployment URL in the history panel (click the 📜 button).</li>
                 </ul>
             </li>
         </ul>
         <p><strong>Note</strong></p>
-        <p>Google Form Settings > Response > Turn off Limit to One Response.Ensure your Google Form is set to accept responses and the entry IDs in your JSON match the form's fields.</p>
+        <p>Google Form Settings > Response > Turn off Limit to One Response. Ensure your Google Form is set to accept responses and the entry IDs in your JSON match the form's fields.</p>
     </div>
     <div id="historyPanel" role="dialog" aria-labelledby="historyTitle">
         <button id="closeHistoryBtn" aria-label="Close history panel">✕</button>
         <h2 id="historyTitle">Deployment History</h2>
+        <p style="color: #FF0000; font-size: 0.9rem; margin-bottom: 1rem;">Note: GitHub Pages hosting may take a few minutes to propagate. If you have a paid GitHub tier, click the link in the history panel to check availability.</p>
         <ul id="historyList"></ul>
     </div>
-
     <script>
         const STATUS_TYPES = {
             SUCCESS: 'success',
@@ -712,11 +708,14 @@
             INFO: 'info'
         };
         let deploymentHistory = [];
-        gsap.from(".form-container", { opacity: 0, y: -100, duration: 1.5, ease: "power4.out" });
-        gsap.from(".input-group", { opacity: 0, x: -50, duration: 1, stagger: 0.2, delay: 0.5 });
-        gsap.from("#form-title span", { opacity: 0, y: 20, duration: 0.8, stagger: 0.05, ease: "back.out(1.7)", delay: 1 });
-
-        document.addEventListener('DOMContentLoaded', () => {
+        function initializeApp() {
+            if (!document.querySelector('.form-container') || !document.getElementById('particles')) {
+                showStatus('Error: Critical page elements missing', STATUS_TYPES.ERROR, { timeout: 5000 });
+                return;
+            }
+            gsap.from(".form-container", { opacity: 0, y: -100, duration: 1.5, ease: "power4.out" });
+            gsap.from(".input-group", { opacity: 0, x: -50, duration: 1, stagger: 0.2, delay: 0.5 });
+            gsap.from("#form-title span", { opacity: 0, y: 20, duration: 0.8, stagger: 0.05, ease: "back.out(1.7)", delay: 1 });
             try {
                 VanillaTilt.init(document.querySelector('.form-container'), {
                     max: 25,
@@ -726,163 +725,122 @@
                     'max-glare': 0.5
                 });
             } catch (e) {
-                console.error('VanillaTilt initialization failed:', e);
                 showStatus('Warning: 3D tilt effect failed to initialize', STATUS_TYPES.ERROR, { timeout: 5000 });
             }
-        });
-
-        const helpBtn = document.getElementById('helpBtn');
-        const helpPopup = document.getElementById('helpPopup');
-        const helpOverlay = document.getElementById('helpOverlay');
-        const closeHelpBtn = document.getElementById('closeHelpBtn');
-
+            initParticles();
+        }
         function showHelpPopup() {
-            try {
-                helpPopup.classList.add('show');
-                helpOverlay.classList.add('show');
-                gsap.fromTo(helpPopup, 
-                    { opacity: 0, scale: 0.8 }, 
-                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
-                );
-                helpPopup.focus();
-            } catch (e) {
-                console.error('Error showing help popup:', e);
-                showStatus('Error: Failed to show help popup', STATUS_TYPES.ERROR, { timeout: 5000 });
+            const helpPopup = document.getElementById('helpPopup');
+            const helpOverlay = document.getElementById('helpOverlay');
+            if (!helpPopup || !helpOverlay) {
+                showStatus('Error: Help popup elements missing', STATUS_TYPES.ERROR, { timeout: 5000 });
+                return;
             }
+            helpPopup.classList.add('show');
+            helpOverlay.classList.add('show');
+            gsap.fromTo(helpPopup, 
+                { opacity: 0, scale: 0.8 }, 
+                { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+            );
+            helpPopup.focus();
         }
-
         function hideHelpPopup() {
-            try {
-                gsap.to(helpPopup, {
-                    opacity: 0,
-                    scale: 0.8,
-                    duration: 0.3,
-                    ease: "power2.in",
-                    onComplete: () => {
-                        helpPopup.classList.remove('show');
-                        helpOverlay.classList.remove('show');
-                    }
-                });
-            } catch (e) {
-                console.error('Error hiding help popup:', e);
-                showStatus('Error: Failed to hide help popup', STATUS_TYPES.ERROR, { timeout: 5000 });
-            }
+            const helpPopup = document.getElementById('helpPopup');
+            const helpOverlay = document.getElementById('helpOverlay');
+            if (!helpPopup || !helpOverlay) return;
+            gsap.to(helpPopup, {
+                opacity: 0,
+                scale: 0.8,
+                duration: 0.3,
+                ease: "power2.in",
+                onComplete: () => {
+                    helpPopup.classList.remove('show');
+                    helpOverlay.classList.remove('show');
+                }
+            });
         }
-
-        helpBtn.addEventListener('click', showHelpPopup);
-        closeHelpBtn.addEventListener('click', hideHelpPopup);
-        helpOverlay.addEventListener('click', hideHelpPopup);
-
-        helpPopup.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                hideHelpPopup();
-            }
-        });
-
         function copyJsonCode() {
-            try {
-                const codeElement = document.getElementById('json-code');
-                const codeText = codeElement.textContent.trim();
-                navigator.clipboard.writeText(codeText).then(() => {
-                    showStatus('JSON code copied to clipboard!', STATUS_TYPES.SUCCESS, { timeout: 3000 });
-                }).catch(err => {
-                    showStatus('Failed to copy JSON code. Please copy manually.', STATUS_TYPES.ERROR, { timeout: 5000 });
-                    console.error('Copy JSON code error:', err);
-                });
-            } catch (e) {
-                console.error('Error copying JSON code:', e);
-                showStatus('Error: Failed to copy JSON code', STATUS_TYPES.ERROR, { timeout: 5000 });
+            const codeElement = document.getElementById('json-code');
+            if (!codeElement) {
+                showStatus('Error: JSON code element missing', STATUS_TYPES.ERROR, { timeout: 5000 });
+                return;
             }
+            const codeText = codeElement.textContent.trim();
+            navigator.clipboard.writeText(codeText).then(() => {
+                showStatus('JSON code copied to clipboard!', STATUS_TYPES.SUCCESS, { timeout: 3000 });
+            }).catch(() => {
+                showStatus('Failed to copy JSON code. Please copy manually.', STATUS_TYPES.ERROR, { timeout: 5000 });
+            });
         }
-
-        const historyBtn = document.getElementById('historyBtn');
-        const historyPanel = document.getElementById('historyPanel');
-        const closeHistoryBtn = document.getElementById('closeHistoryBtn');
-        const historyList = document.getElementById('historyList');
-
         function showHistoryPanel() {
-            try {
-                historyPanel.classList.add('show');
-                helpOverlay.classList.add('show');
-                gsap.fromTo(historyPanel, 
-                    { x: 300, opacity: 0 }, 
-                    { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
-                );
-                updateHistoryList();
-                historyPanel.focus();
-            } catch (e) {
-                console.error('Error showing history panel:', e);
-                showStatus('Error: Failed to show history panel', STATUS_TYPES.ERROR, { timeout: 5000 });
+            const historyPanel = document.getElementById('historyPanel');
+            const helpOverlay = document.getElementById('helpOverlay');
+            if (!historyPanel || !helpOverlay) {
+                showStatus('Error: History panel elements missing', STATUS_TYPES.ERROR, { timeout: 5000 });
+                return;
             }
+            historyPanel.classList.add('show');
+            helpOverlay.classList.add('show');
+            gsap.fromTo(historyPanel, 
+                { x: 300, opacity: 0 }, 
+                { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
+            );
+            updateHistoryList();
+            historyPanel.focus();
         }
-
         function hideHistoryPanel() {
-            try {
-                gsap.to(historyPanel, {
-                    x: 300,
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: "power2.in",
-                    onComplete: () => {
-                        historyPanel.classList.remove('show');
-                        helpOverlay.classList.remove('show');
-                    }
-                });
-            } catch (e) {
-                console.error('Error hiding history panel:', e);
-                showStatus('Error: Failed to hide history panel', STATUS_TYPES.ERROR, { timeout: 5000 });
-            }
+            const historyPanel = document.getElementById('historyPanel');
+            const helpOverlay = document.getElementById('helpOverlay');
+            if (!historyPanel || !helpOverlay) return;
+            gsap.to(historyPanel, {
+                x: 300,
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.in",
+                onComplete: () => {
+                    historyPanel.classList.remove('show');
+                    helpOverlay.classList.remove('show');
+                }
+            });
         }
-
         function updateHistoryList() {
-            try {
-                historyList.innerHTML = '';
-                deploymentHistory.forEach((entry, index) => {
-                    const li = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = entry.url;
-                    link.textContent = entry.url;
-                    link.target = '_blank';
-                    const copyBtn = document.createElement('button');
-                    copyBtn.textContent = 'Copy Link';
-                    copyBtn.classList.add('copy-button');
-                    copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(entry.url).then(() => {
-                            showStatus('Link copied to clipboard!', STATUS_TYPES.SUCCESS, { timeout: 3000 });
-                        }).catch(err => {
-                            showStatus('Failed to copy link. Please copy manually.', STATUS_TYPES.ERROR, { timeout: 5000 });
-                            console.error('Copy link error:', err);
-                        });
-                    };
-                    li.appendChild(link);
-                    li.appendChild(copyBtn);
-                    historyList.appendChild(li);
-                });
-            } catch (e) {
-                console.error('Error updating history list:', e);
-                showStatus('Error: Failed to update history list', STATUS_TYPES.ERROR, { timeout: 5000 });
+            const historyList = document.getElementById('historyList');
+            if (!historyList) {
+                showStatus('Error: History list element missing', STATUS_TYPES.ERROR, { timeout: 5000 });
+                return;
             }
+            historyList.innerHTML = '';
+            deploymentHistory.forEach(entry => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = entry.url;
+                link.textContent = entry.url;
+                link.target = '_blank';
+                const copyBtn = document.createElement('button');
+                copyBtn.textContent = 'Copy Link';
+                copyBtn.classList.add('copy-button');
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(entry.url).then(() => {
+                        showStatus('Link copied to clipboard!', STATUS_TYPES.SUCCESS, { timeout: 3000 });
+                    }).catch(() => {
+                        showStatus('Failed to copy link. Please copy manually.', STATUS_TYPES.ERROR, { timeout: 5000 });
+                    });
+                };
+                li.appendChild(link);
+                li.appendChild(copyBtn);
+                historyList.appendChild(li);
+            });
         }
-
-        historyBtn.addEventListener('click', showHistoryPanel);
-        closeHistoryBtn.addEventListener('click', hideHistoryPanel);
-        helpOverlay.addEventListener('click', hideHistoryPanel);
-
-        historyPanel.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                hideHistoryPanel();
+        function initParticles() {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                showStatus('Error: Canvas context not supported', STATUS_TYPES.ERROR, { timeout: 5000 });
+                return;
             }
-        });
-
-        let canvas = document.getElementById('particles');
-        let ctx = canvas.getContext('2d');
-        if (!ctx) {
-            console.error('Canvas context not supported');
-        } else {
             let particlesArray = [];
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-
             class Particle {
                 constructor(x, y) {
                     this.x = x;
@@ -906,8 +864,8 @@
                     ctx.fill();
                 }
             }
-
-            function initParticles() {
+            function initParticlesArray() {
+                particlesArray = [];
                 const particleCount = window.innerWidth < 480 ? 20 : 50;
                 for (let i = 0; i < particleCount; i++) {
                     let x = Math.random() * canvas.width;
@@ -915,7 +873,6 @@
                     particlesArray.push(new Particle(x, y));
                 }
             }
-
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 for (let i = 0; i < particlesArray.length; i++) {
@@ -931,18 +888,14 @@
                 }
                 requestAnimationFrame(animateParticles);
             }
-
-            initParticles();
+            initParticlesArray();
             animateParticles();
-
             window.addEventListener('resize', () => {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
-                particlesArray = [];
-                initParticles();
+                initParticlesArray();
             });
         }
-
         function debounce(fn, delay) {
             let timeout;
             return (...args) => {
@@ -950,14 +903,10 @@
                 timeout = setTimeout(() => fn(...args), delay);
             };
         }
-
         function showStatus(message, type, options = {}) {
             const { timeout = 5000 } = options;
             const statusElement = document.getElementById('status');
-            if (!statusElement) {
-                console.error('Status element not found');
-                return;
-            }
+            if (!statusElement) return;
             statusElement.innerHTML = '';
             const messageContainer = document.createElement('span');
             messageContainer.textContent = message;
@@ -971,7 +920,6 @@
                 }, timeout);
             }
         }
-
         function validateFormLink(link) {
             if (!link) return { valid: false, message: 'Form link is required' };
             if (!link.includes('docs.google.com/forms')) {
@@ -979,7 +927,6 @@
             }
             return { valid: true, message: 'Form link is valid' };
         }
-
         function validateJSON(json) {
             if (!json) return { valid: false, message: 'JSON data is required' };
             try {
@@ -997,7 +944,6 @@
                 return { valid: false, message: 'Invalid JSON format' };
             }
         }
-
         function showInputStatus(inputId, message, valid) {
             const statusElement = document.getElementById(`${inputId}-status`);
             if (statusElement) {
@@ -1005,28 +951,16 @@
                 statusElement.className = `input-status show ${valid ? 'valid' : 'invalid'}`;
             }
         }
-
-        document.getElementById('form-link').addEventListener('input', debounce((e) => {
-            const { valid, message } = validateFormLink(e.target.value);
-            showInputStatus('form-link', message, valid);
-            e.target.classList.toggle('invalid', !valid);
-        }, 300));
-
-        document.getElementById('jsonInput').addEventListener('input', debounce((e) => {
-            const { valid, message } = validateJSON(e.target.value);
-            showInputStatus('jsonInput', message, valid);
-            e.target.classList.toggle('invalid', !valid);
-        }, 300));
-
-        async function deployToVercel(htmlContent) {
-            const VERCEL_TOKEN = 'G70YCWNqXQxQBZW5yePHApjL'; // Provided Vercel token
-            const API_URL = 'https://api.vercel.com/v13/deployments';
-
+        async function deployToGitHub(htmlContent) {
+            const GITHUB_PAT = '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';
+            const REPO_OWNER = 'guider23';
+            const REPO_NAME = 'custom_gf_ui';
+            const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/logs`;
+            const GITHUB_PAGES_BASE = `https://${REPO_OWNER}.github.io/${REPO_NAME}/logs`;
             try {
                 showStatus('Preparing deployment...', STATUS_TYPES.INFO, { timeout: 0 });
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(htmlContent, 'text/html');
-
                 const deployBtn = doc.getElementById('deployBtn');
                 if (deployBtn) deployBtn.remove();
                 const historyBtn = doc.getElementById('historyBtn');
@@ -1039,13 +973,11 @@
                 if (resetButton) resetButton.remove();
                 const jsonSection = doc.getElementById('json-section');
                 if (jsonSection) jsonSection.remove();
-
                 const formLinkInput = document.getElementById('form-link');
                 let formLink = formLinkInput ? formLinkInput.value.trim() : '';
                 if (formLink && formLink.includes('docs.google.com/forms')) {
                     formLink = formLink.replace(/\/viewform(\?.*)?$/, '/formResponse');
                 }
-                        
                 const formContent = doc.querySelector('.form-content');
                 if (formContent && formLink) {
                     const hiddenInput = doc.createElement('input');
@@ -1054,25 +986,25 @@
                     hiddenInput.value = formLink;
                     formContent.appendChild(hiddenInput);
                 }
-
                 const scripts = doc.getElementsByTagName('script');
                 for (let script of scripts) {
                     script.textContent = `
                         document.addEventListener('DOMContentLoaded', () => {
-                            VanillaTilt.init(document.querySelector('.form-container'), {
-                                max: 25,
-                                speed: 600,
-                                perspective: 800,
-                                glare: true,
-                                'max-glare': 0.5
-                            });
-
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
                             const helpBtn = document.getElementById('helpBtn');
                             const helpPopup = document.getElementById('helpPopup');
                             const helpOverlay = document.getElementById('helpOverlay');
                             const closeHelpBtn = document.getElementById('closeHelpBtn');
-
                             function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
                                 helpPopup.classList.add('show');
                                 helpOverlay.classList.add('show');
                                 gsap.fromTo(helpPopup, 
@@ -1081,8 +1013,8 @@
                                 );
                                 helpPopup.focus();
                             }
-
                             function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
                                 gsap.to(helpPopup, {
                                     opacity: 0,
                                     scale: 0.8,
@@ -1094,215 +1026,185 @@
                                     }
                                 });
                             }
-
-                            helpBtn.addEventListener('click', showHelpPopup);
-                            closeHelpBtn.addEventListener('click', hideHelpPopup);
-                            helpOverlay.addEventListener('click', hideHelpPopup);
-
-                            helpPopup.addEventListener('keydown', (e) => {
-                                if (e.key === 'Escape') {
-                                    hideHelpPopup();
-                                }
-                            });
-
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
                             function copyJsonCode() {
                                 const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
                                 const codeText = codeElement.textContent.trim();
                                 navigator.clipboard.writeText(codeText).then(() => {
                                     const statusElement = document.getElementById('status');
-                                    statusElement.innerHTML = '';
-                                    statusElement.textContent = 'JSON code copied to clipboard!';
-                                    statusElement.className = 'status show success';
-                                    setTimeout(() => {
-                                        statusElement.classList.remove('show');
+                                    if (statusElement) {
                                         statusElement.innerHTML = '';
-                                        statusElement.className = 'status';
-                                    }, 3000);
-                                }).catch(err => {
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
                                     const statusElement = document.getElementById('status');
-                                    statusElement.innerHTML = '';
-                                    statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
-                                    statusElement.className = 'status show error';
-                                    setTimeout(() => {
-                                        statusElement.classList.remove('show');
+                                    if (statusElement) {
                                         statusElement.innerHTML = '';
-                                        statusElement.className = 'status';
-                                    }, 5000);
-                                    console.error('Copy JSON code error:', err);
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
                                 });
                             }
-
                             const copyCodeBtn = document.querySelector('.copy-code-btn');
-                            copyCodeBtn.addEventListener('click', copyJsonCode);
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
                         });
                     `;
                 }
-
                 const modifiedHtmlContent = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
-                const files = [{ file: 'index.html', data: modifiedHtmlContent }];
-
-                showStatus('Creating deployment...', STATUS_TYPES.INFO, { timeout: 0 });
-                const response = await fetch(API_URL, {
-                    method: 'POST',
+                const timestamp = new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+                const fileName = `deployment-${timestamp}.html`;
+                const filePath = `logs/${fileName}`;
+                const base64Content = btoa(unescape(encodeURIComponent(modifiedHtmlContent)));
+                showStatus('Committing to GitHub...', STATUS_TYPES.INFO, { timeout: 0 });
+                let sha = null;
+                try {
+                    const checkResponse = await fetch(`${API_URL}/${fileName}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${GITHUB_PAT}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (checkResponse.ok) {
+                        const checkData = await checkResponse.json();
+                        sha = checkData.sha;
+                    }
+                } catch (e) {}
+                const response = await fetch(`${API_URL}/${fileName}`, {
+                    method: 'PUT',
                     headers: {
-                        'Authorization': `Bearer ${VERCEL_TOKEN}`,
+                        'Authorization': `Bearer ${GITHUB_PAT}`,
+                        'Accept': 'application/vnd.github.v3+json',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        name: `form-demo-${Date.now()}`,
-                        files: files,
-                        projectSettings: { framework: null }
+                        message: `Deploy form ${fileName}`,
+                        content: base64Content,
+                        sha: sha || undefined,
+                        branch: 'main'
                     })
                 });
-
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(`Failed to create deployment: ${errorData.error?.message || response.statusText || 'Unknown error'}`);
-                }
-
-                const deployData = await response.json();
-                const deploymentId = deployData.id;
-
-                showStatus('Waiting for deployment...', STATUS_TYPES.INFO, { timeout: 0 });
-                let deploymentStatus;
-                for (let i = 0; i < 60; i++) {
-                    const statusResponse = await fetch(`https://api.vercel.com/v13/deployments/${deploymentId}`, {
-                        headers: { 'Authorization': `Bearer ${VERCEL_TOKEN}` }
-                    });
-                    if (!statusResponse.ok) {
-                        const errorData = await statusResponse.json().catch(() => ({}));
-                        throw new Error(`Failed to check deployment status: ${errorData.error?.message || statusResponse.statusText || 'Unknown error'}`);
-                    }
-                    deploymentStatus = await statusResponse.json();
-                    if (deploymentStatus.readyState === 'READY') break;
-                    if (deploymentStatus.readyState === 'ERROR') throw new Error(`Deployment failed: ${deploymentStatus.error || 'Unknown error'}`);
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                }
-
-                if (deploymentStatus.readyState !== 'READY') {
-                    throw new Error('Deployment timed out after 120 seconds');
-                }
-
-                return `https://${deploymentStatus.url}`;
-            } catch (error) {
-                console.error('Vercel deployment error:', error, { stack: error.stack });
-                throw error;
-            }
-        }
-
-        function showDeployButton() {
-            try {
-                if (document.getElementById('deployBtn')) {
-                    document.getElementById('deployBtn').remove();
-                }
-
-                const btn = document.createElement('button');
-                btn.id = 'deployBtn';
-                btn.innerHTML = '<span>🚀 Deploy</span><div class="spinner"></div>';
-                btn.setAttribute('aria-label', 'Deploy form to Vercel');
-
-                Object.assign(btn.style, {
-                    position: 'fixed',
-                    bottom: '30px',
-                    right: '30px',
-                    padding: '14px 28px',
-                    borderRadius: '999px',
-                    border: 'none',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    fontFamily: 'Segoe UI, sans-serif',
-                    color: '#fff',
-                    background: 'linear-gradient(135deg, #00c6ff, #0072ff)',
-                    cursor: 'pointer',
-                    boxShadow: '0 10px 20px rgba(0, 114, 255, 0.4)',
-                    zIndex: '9999',
-                    transition: 'transform 0.2s ease, box-shadow 0.3s ease'
-                });
-
-                btn.addEventListener('mouseenter', () => {
-                    if (!btn.disabled) {
-                        btn.style.transform = 'scale(1.07)';
-                        btn.style.boxShadow = '0 12px 24px rgba(0, 114, 255, 0.6)';
-                    }
-                });
-
-                btn.addEventListener('mouseleave', () => {
-                    if (!btn.disabled) {
-                        btn.style.transform = 'scale(1)';
-                        btn.style.boxShadow = '0 10px 20px rgba(0, 114, 255, 0.4)';
-                    }
-                });
-
-                btn.addEventListener('click', async () => {
-                    gsap.to(btn, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
-                    btn.disabled = true;
-                    btn.classList.add('loading');
-                    showStatus('Starting deployment...', STATUS_TYPES.INFO, { timeout: 0 });
-
+                    let errorDetails = 'Unknown error';
                     try {
-                        const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-                        const deployUrl = await deployToVercel(htmlContent);
-                        deploymentHistory.unshift({ url: deployUrl, timestamp: new Date().toLocaleString() });
-                        showStatus('Deployed successfully! Check the history panel for the link.', STATUS_TYPES.SUCCESS, { timeout: 5000 });
-                        showHistoryPanel();
-                    } catch (error) {
-                        const errorMessage = error.message || 'An unexpected error occurred during deployment';
-                        console.error('Deployment error details:', { error, response: error.response });
-                        showStatus(`Failed to deploy: ${errorMessage}`, STATUS_TYPES.ERROR, { timeout: 10000 });
-                    } finally {
-                        btn.disabled = false;
-                        btn.classList.remove('loading');
-                    }
-                });
-
-                document.body.appendChild(btn);
-            } catch (e) {
-                console.error('Error showing deploy button:', e);
-                showStatus('Error: Failed to create deploy button', STATUS_TYPES.ERROR, { timeout: 5000 });
+                        const errorData = await response.json();
+                        errorDetails = errorData.message || response.statusText;
+                    } catch (e) {}
+                    throw new Error(`Failed to commit to GitHub: ${errorDetails}`);
+                }
+                const deployUrl = `${GITHUB_PAGES_BASE}/${fileName}`;
+                return deployUrl;
+            } catch (error) {
+                throw new Error(error.message || 'Deployment failed');
             }
         }
-
+        function showDeployButton() {
+            const existingBtn = document.getElementById('deployBtn');
+            if (existingBtn) existingBtn.remove();
+            const btn = document.createElement('button');
+            btn.id = 'deployBtn';
+            btn.innerHTML = '<span>🚀 Deploy</span><div class="spinner"></div>';
+            btn.setAttribute('aria-label', 'Deploy form to GitHub Pages');
+            Object.assign(btn.style, {
+                position: 'fixed',
+                bottom: '30px',
+                right: '30px',
+                padding: '14px 28px',
+                borderRadius: '999px',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                fontFamily: 'Segoe UI, sans-serif',
+                color: '#fff',
+                background: 'linear-gradient(135deg, #00c6ff, #0072ff)',
+                cursor: 'pointer',
+                boxShadow: '0 10px 20px rgba(0, 114, 255, 0.4)',
+                zIndex: '9999',
+                transition: 'transform 0.2s ease, box-shadow 0.3s ease'
+            });
+            btn.addEventListener('mouseenter', () => {
+                if (!btn.disabled) {
+                    btn.style.transform = 'scale(1.07)';
+                    btn.style.boxShadow = '0 12px 24px rgba(0, 114, 255, 0.6)';
+                }
+            });
+            btn.addEventListener('mouseleave', () => {
+                if (!btn.disabled) {
+                    btn.style.transform = 'scale(1)';
+                    btn.style.boxShadow = '0 10px 20px rgba(0, 114, 255, 0.4)';
+                }
+            });
+            btn.addEventListener('click', async () => {
+                gsap.to(btn, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
+                btn.disabled = true;
+                btn.classList.add('loading');
+                showStatus('Starting deployment...', STATUS_TYPES.INFO, { timeout: 0 });
+                try {
+                    const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+                    const deployUrl = await deployToGitHub(htmlContent);
+                    deploymentHistory.unshift({ url: deployUrl, timestamp: new Date().toLocaleString() });
+                    showStatus('Deployed successfully! Check the history panel for the link.', STATUS_TYPES.SUCCESS, { timeout: 5000 });
+                    showHistoryPanel();
+                } catch (error) {
+                    showStatus(`Failed to deploy: ${error.message}`, STATUS_TYPES.ERROR, { timeout: 10000 });
+                } finally {
+                    btn.disabled = false;
+                    btn.classList.remove('loading');
+                }
+            });
+            document.body.appendChild(btn);
+        }
         async function generateForm() {
             const jsonInput = document.getElementById('jsonInput');
             const formLinkInput = document.getElementById('form-link');
             const jsonSection = document.getElementById('json-section');
             const formContent = document.querySelector('.form-content');
             const button = document.querySelector('#json-section button');
-
             if (!jsonInput || !formLinkInput || !jsonSection || !formContent || !button) {
-                console.error('Required DOM elements not found:', { jsonInput, formLinkInput, jsonSection, formContent, button });
-                showStatus('Error: Form initialization failed due to missing elements', STATUS_TYPES.ERROR);
+                showStatus('Error: Form initialization failed due to missing elements', STATUS_TYPES.ERROR, { timeout: 5000 });
                 return;
             }
-
             button.disabled = true;
             showStatus('Generating form...', STATUS_TYPES.INFO, { timeout: 0 });
-
             formContent.innerHTML = '<div class="status" id="status" role="alert"></div>';
-
             let formLink = formLinkInput.value.trim();
             if (!formLink || !formLink.includes('docs.google.com/forms')) {
-                showStatus('Please enter a valid Google Form link', STATUS_TYPES.ERROR);
+                showStatus('Please enter a valid Google Form link', STATUS_TYPES.ERROR, { timeout: 5000 });
                 button.disabled = false;
                 return;
             }
             formLink = formLink.replace(/\/viewform(\?.*)?$/, '/formResponse');
-            console.log('Corrected form link:', formLink);
-
             try {
                 const formData = JSON.parse(jsonInput.value);
-                if (!Array.isArray(formData)) {
-                    throw new Error('JSON must be an array of objects');
+                if (!Array.isArray(formData) || formData.length === 0) {
+                    throw new Error('JSON must be a non-empty array');
                 }
-
                 jsonSection.style.display = 'none';
-
                 const hiddenInput = document.createElement('input');
                 hiddenInput.type = 'hidden';
                 hiddenInput.id = 'form-link-hidden';
                 hiddenInput.value = formLink;
                 formContent.appendChild(hiddenInput);
-
                 formData.forEach(field => {
                     if (!field.id || !field.question) {
                         throw new Error('Each field must have an id and question');
@@ -1320,42 +1222,32 @@
                     input.required = true;
                     input.setAttribute('aria-label', field.question);
                     input.dataset.entry = `entry.${field.id}`;
-                    console.log(`Generated field: id=${field.id}, entry=${input.dataset.entry}, question=${field.question}`);
-
                     inputGroup.appendChild(input);
                     inputGroup.appendChild(label);
                     formContent.insertBefore(inputGroup, formContent.querySelector('#status'));
                 });
-
                 const submitButton = document.createElement('button');
                 submitButton.innerHTML = '<span>Submit</span><div class="spinner"></div>';
                 submitButton.setAttribute('aria-label', 'Submit form');
                 submitButton.onclick = () => submitForm();
                 formContent.insertBefore(submitButton, formContent.querySelector('#status'));
-
                 const resetButton = document.createElement('button');
                 resetButton.innerHTML = '<span>Reset</span>';
                 resetButton.setAttribute('aria-label', 'Reset form');
-                resetButton.onclick = function () {
-                    try {
-                        gsap.to(resetButton, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
-                        showStatus('Resetting form...', STATUS_TYPES.INFO, { timeout: 1000 });
-                        setTimeout(() => {
-                            formContent.innerHTML = '<div class="status" id="status" role="alert"></div>';
-                            jsonSection.style.display = 'block';
-                            jsonInput.value = '';
-                            formLinkInput.value = '';
-                            showStatus('Form reset successfully', STATUS_TYPES.SUCCESS, { timeout: 3000 });
-                            const deployBtn = document.getElementById('deployBtn');
-                            if (deployBtn) deployBtn.remove();
-                        }, 100);
-                    } catch (e) {
-                        console.error('Error resetting form:', e);
-                        showStatus('Error: Failed to reset form', STATUS_TYPES.ERROR, { timeout: 5000 });
-                    }
+                resetButton.onclick = () => {
+                    gsap.to(resetButton, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
+                    showStatus('Resetting form...', STATUS_TYPES.INFO, { timeout: 1000 });
+                    setTimeout(() => {
+                        formContent.innerHTML = '<div class="status" id="status" role="alert"></div>';
+                        jsonSection.style.display = 'block';
+                        jsonInput.value = '';
+                        formLinkInput.value = '';
+                        showStatus('Form reset successfully', STATUS_TYPES.SUCCESS, { timeout: 3000 });
+                        const deployBtn = document.getElementById('deployBtn');
+                        if (deployBtn) deployBtn.remove();
+                    }, 100);
                 };
                 formContent.insertBefore(resetButton, formContent.querySelector('#status'));
-
                 document.querySelectorAll('.form-content input').forEach(input => {
                     input.addEventListener('focus', () => {
                         gsap.to(input, { scale: 1.02, duration: 0.2 });
@@ -1367,38 +1259,29 @@
                         }
                     });
                 });
-
                 showDeployButton();
                 showStatus('Form generated successfully!', STATUS_TYPES.SUCCESS, { timeout: 3000 });
-
             } catch (error) {
-                console.error('Form generation error:', error);
-                showStatus(`Error: ${error.message}`, STATUS_TYPES.ERROR);
+                showStatus(`Error: ${error.message}`, STATUS_TYPES.ERROR, { timeout: 5000 });
             } finally {
                 button.disabled = false;
             }
         }
-
         async function submitForm() {
             const inputs = document.querySelectorAll('.form-content input:not([type="hidden"])');
             const status = document.getElementById('status');
             const button = document.querySelector('.form-content button');
             const formLinkInput = document.getElementById('form-link-hidden');
             const formLink = formLinkInput ? formLinkInput.value : '';
-
             if (!status || !button || !formLink) {
-                console.error('Status, button, or form link not found:', { status, button, formLink });
-                showStatus('Error: Submission failed due to missing elements', STATUS_TYPES.ERROR);
+                showStatus('Error: Submission failed due to missing elements', STATUS_TYPES.ERROR, { timeout: 5000 });
                 return;
             }
-
             gsap.to(button, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
             status.classList.remove(STATUS_TYPES.SUCCESS, STATUS_TYPES.ERROR, STATUS_TYPES.INFO, 'show');
             inputs.forEach(input => input.classList.remove('invalid'));
-
             let isValid = true;
             const formData = new URLSearchParams();
-
             inputs.forEach(input => {
                 if (!input.value.trim()) {
                     input.classList.add('invalid');
@@ -1406,22 +1289,16 @@
                 } else {
                     input.classList.remove('invalid');
                     formData.append(input.dataset.entry, input.value);
-                    console.log(`Submitting: ${input.dataset.entry}=${input.value}`);
                 }
             });
-
             if (!isValid) {
-                showStatus('Please fill all required fields!', STATUS_TYPES.ERROR);
+                showStatus('Please fill all required fields!', STATUS_TYPES.ERROR, { timeout: 5000 });
                 return;
             }
-
             button.disabled = true;
             button.classList.add('loading');
             showStatus('Transmitting data...', STATUS_TYPES.INFO, { timeout: 0 });
-
             try {
-                console.log('Submitting to:', formLink);
-                console.log('Form data:', formData.toString());
                 const response = await fetch(formLink, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1430,18 +1307,58 @@
                     },
                     body: formData
                 });
-                console.log('Response status:', response.status, 'Response type:', response.type);
                 showStatus('Data submitted (status unverified due to CORS restrictions)', STATUS_TYPES.SUCCESS, { timeout: 3000 });
                 gsap.to(".form-container", { scale: 1.1, duration: 0.4, repeat: 1, yoyo: true });
                 inputs.forEach(input => input.value = '');
             } catch (error) {
-                console.error('Submission error:', error);
-                showStatus(`Transmission failed: ${error.message}`, STATUS_TYPES.ERROR);
+                showStatus(`Transmission failed: ${error.message}`, STATUS_TYPES.ERROR, { timeout: 5000 });
             } finally {
                 button.disabled = false;
                 button.classList.remove('loading');
             }
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+            const helpBtn = document.getElementById('helpBtn');
+            const closeHelpBtn = document.getElementById('closeHelpBtn');
+            const helpOverlay = document.getElementById('helpOverlay');
+            const historyBtn = document.getElementById('historyBtn');
+            const closeHistoryBtn = document.getElementById('closeHistoryBtn');
+            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+            if (historyBtn) historyBtn.addEventListener('click', showHistoryPanel);
+            if (closeHistoryBtn) closeHistoryBtn.addEventListener('click', hideHistoryPanel);
+            if (helpOverlay) helpOverlay.addEventListener('click', hideHistoryPanel);
+            const helpPopup = document.getElementById('helpPopup');
+            if (helpPopup) {
+                helpPopup.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') hideHelpPopup();
+                });
+            }
+            const historyPanel = document.getElementById('historyPanel');
+            if (historyPanel) {
+                historyPanel.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') hideHistoryPanel();
+                });
+            }
+            const formLinkInput = document.getElementById('form-link');
+            if (formLinkInput) {
+                formLinkInput.addEventListener('input', debounce((e) => {
+                    const { valid, message } = validateFormLink(e.target.value);
+                    showInputStatus('form-link', message, valid);
+                    e.target.classList.toggle('invalid', !valid);
+                }, 300));
+            }
+            const jsonInput = document.getElementById('jsonInput');
+            if (jsonInput) {
+                jsonInput.addEventListener('input', debounce((e) => {
+                    const { valid, message } = validateJSON(e.target.value);
+                    showInputStatus('jsonInput', message, valid);
+                    e.target.classList.toggle('invalid', !valid);
+                }, 300));
+            }
+        });
     </script>
 </body>
 </html>
