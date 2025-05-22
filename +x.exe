@@ -12,22 +12,19 @@
                 var firstSheetName = workbook.SheetNames[0];
                 var worksheet = workbook.Sheets[firstSheetName];
 
-                // Convert sheet to JSON to filter blank rows
                 var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+
                 var filteredData = jsonData.filter(row => row.some(filledCell));
 
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
                 var headerRowIndex = filteredData.findIndex((row, index) =>
                   row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
                 );
-                // Fallback
+
                 if (headerRowIndex === -1 || headerRowIndex > 25) {
                   headerRowIndex = 0;
                 }
 
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); 
                 csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
                 return csv;
             } catch (e) {
@@ -46,7 +43,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
+
         body {
             font-family: 'Varela Round', sans-serif;
             background: linear-gradient(180deg, #FF69B4 0%, #00CED1 100%);
@@ -61,7 +58,6 @@
             position: relative;
         }
 
-        /* Background Elements */
         .background {
             position: fixed;
             top: 0;
@@ -94,7 +90,6 @@
             animation: sway 5s ease-in-out infinite;
         }
 
-        /* Form Container */
         .form-container {
             background: rgba(0, 0, 0, 0.7);
             padding: 3rem;
@@ -109,7 +104,6 @@
             animation: glitch 2s infinite;
         }
 
-        /* Form Title */
         .form-container h1 {
             color: #FFFFFF;
             margin-bottom: 2.5rem;
@@ -120,7 +114,6 @@
             text-shadow: 0 0 10px #FF69B4, 0 0 20px #00CED1;
         }
 
-        /* Input Groups */
         .input-group {
             position: relative;
             margin: 1.5rem 0;
@@ -158,7 +151,6 @@
             animation: shake 0.3s;
         }
 
-        /* Input Labels */
         .form-container label {
             position: absolute;
             left: 16px;
@@ -181,7 +173,6 @@
             border-radius: 5px;
         }
 
-        /* Submit Button */
         .form-container button {
             background: linear-gradient(45deg, #FF69B4, #00CED1);
             color: #FFFFFF;
@@ -218,7 +209,6 @@
             pointer-events: none;
         }
 
-        /* Loading Animation */
         .spinner {
             display: none;
             width: 30px;
@@ -242,7 +232,6 @@
             visibility: hidden;
         }
 
-        /* Status Message */
         .status {
             margin-top: 1.5rem;
             font-size: 0.9rem;
@@ -266,7 +255,6 @@
             text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
         }
 
-        /* Animations */
         @keyframes glitch {
             0% { transform: translate(0); }
             20% { transform: translate(-2px, 2px); }
@@ -302,7 +290,6 @@
             to { transform: scale(4); opacity: 0; }
         }
 
-        /* Responsive Design */
         @media (max-width: 480px) {
             .form-container {
                 padding: 2rem;
@@ -354,12 +341,11 @@
 </div>
 
 <script>
-    // GSAP Animations
+
     gsap.from(".form-container", { opacity: 0, y: 100, duration: 1.5, ease: "back.out(1.7)" });
     gsap.from(".input-group", { opacity: 0, scale: 0.8, duration: 1, stagger: 0.2, delay: 0.5 });
     gsap.to(".form-container", { boxShadow: "0 0 40px rgba(255, 105, 180, 0.7)", duration: 2, repeat: -1, yoyo: true });
 
-    // Ripple Effect on Button
     document.querySelector("button").addEventListener("click", function(e) {
         if (!this.classList.contains("loading")) {
             const ripple = document.createElement("span");
@@ -369,12 +355,10 @@
             ripple.style.top = e.clientY - rect.top + "px";
             this.appendChild(ripple);
             setTimeout(() => ripple.remove(), 600);
-            // Optional synthwave sound
-            // new Audio('https://assets.codepen.io/127738/click.wav').play();
+
         }
     });
 
-    // Form Submission
     async function submitForm() {
         const name = document.getElementById("name");
         const email = document.getElementById("email");
@@ -384,11 +368,9 @@
         const status = document.getElementById("status");
         const button = document.querySelector("button");
 
-        // Reset states
         status.classList.remove("success", "error", "show");
         [name, email, address, phone, comments].forEach(input => input.classList.remove("invalid"));
 
-        // Validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^[0-9]{10,}$/;
         let isValid = true;
@@ -417,12 +399,10 @@
         if (!isValid) {
             status.textContent = "Invalid data vibes detected.";
             status.classList.add("error", "show");
-            // Optional sound effect
-            // new Audio('https://assets.codepen.io/127738/error.wav').play();
+
             return;
         }
 
-        // Loading state
         button.disabled = true;
         button.classList.add("loading");
         status.textContent = "Uploading to grid...";
@@ -448,10 +428,7 @@
                 status.classList.remove("error");
                 status.classList.add("success", "show");
                 gsap.to(".form-container", { scale: 1.1, duration: 0.4, repeat: 1, yoyo: true });
-                // Optional sound effect
-                // new Audio('https://assets.codepen.io/127738/success.wav').play();
-                
-                // Reset form
+
                 [name, email, address, phone, comments].forEach(input => input.value = "");
             } else {
                 status.textContent = "Grid sync failed. Retry upload.";
