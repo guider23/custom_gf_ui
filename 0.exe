@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
+
         body {
             font-family: 'Roboto Mono', monospace;
             background: #0A0A23;
@@ -22,7 +22,6 @@
             box-sizing: border-box;
         }
 
-        /* Canvas for Particles */
         #particles {
             position: fixed;
             top: 0;
@@ -32,7 +31,6 @@
             z-index: -1;
         }
 
-        /* Form Container */
         .form-container {
             background: rgba(20, 20, 40, 0.9);
             padding: 3rem;
@@ -51,7 +49,6 @@
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
         }
 
-        /* Form Title */
         .form-container h1 {
             color: #00FFFF;
             margin-bottom: 2.5rem;
@@ -63,7 +60,6 @@
             text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
         }
 
-        /* Input Groups */
         .input-group {
             position: relative;
             margin: 1.5rem 0;
@@ -96,7 +92,6 @@
             animation: shake 0.3s;
         }
 
-        /* Input Labels */
         .form-container label {
             position: absolute;
             left: 16px;
@@ -119,7 +114,6 @@
             border-radius: 5px;
         }
 
-        /* Submit Button */
         .form-container button {
             background: linear-gradient(45deg, #00FFFF, #FF00FF);
             color: #FFFFFF;
@@ -149,7 +143,6 @@
             cursor: not-allowed;
         }
 
-        /* Loading Animation */
         .spinner {
             display: none;
             width: 30px;
@@ -173,7 +166,6 @@
             visibility: hidden;
         }
 
-        /* Status Message */
         .status {
             margin-top: 1.5rem;
             font-size: 0.9rem;
@@ -198,7 +190,6 @@
             text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
         }
 
-        /* Animations */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-6px); }
@@ -216,7 +207,6 @@
             100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
         }
 
-        /* Responsive Design */
         @media (max-width: 480px) {
             .form-container {
                 padding: 2rem;
@@ -262,12 +252,11 @@
 </div>
 
 <script>
-    // GSAP Animations
+
     gsap.from(".form-container", { opacity: 0, y: -100, duration: 1.5, ease: "power4.out" });
     gsap.from(".input-group", { opacity: 0, x: -50, duration: 1, stagger: 0.2, delay: 0.5 });
     gsap.to(".form-container", { animation: "pulse 3s infinite", ease: "none" });
 
-    // Particle Background
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -321,13 +310,11 @@
     initParticles();
     animateParticles();
 
-    // Resize Handler
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     });
 
-    // Form Submission
     async function submitForm() {
         const name = document.getElementById("name");
         const email = document.getElementById("email");
@@ -337,11 +324,9 @@
         const status = document.getElementById("status");
         const button = document.querySelector("button");
 
-        // Reset states
         status.classList.remove("success", "error", "show");
         [name, email, address, phone, comments].forEach(input => input.classList.remove("invalid"));
 
-        // Validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^[0-9]{10,}$/;
         let isValid = true;
@@ -370,12 +355,10 @@
         if (!isValid) {
             status.textContent = "Invalid data detected.";
             status.classList.add("error", "show");
-            // Optional sound effect
-            // new Audio('https://assets.codepen.io/127738/error.mp3').play();
+
             return;
         }
 
-        // Loading state
         button.disabled = true;
         button.classList.add("loading");
         status.textContent = "Transmitting data...";
@@ -401,10 +384,7 @@
                 status.classList.remove("error");
                 status.classList.add("success", "show");
                 gsap.to(".form-container", { scale: 1.1, duration: 0.4, repeat: 1, yoyo: true });
-                // Optional sound effect
-                // new Audio('https://assets.codepen.io/127738/success.mp3').play();
-                
-                // Reset form
+
                 [name, email, address, phone, comments].forEach(input => input.value = "");
             } else {
                 status.textContent = "Success";
