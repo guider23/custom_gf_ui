@@ -12,22 +12,19 @@
                 var firstSheetName = workbook.SheetNames[0];
                 var worksheet = workbook.Sheets[firstSheetName];
 
-                // Convert sheet to JSON to filter blank rows
                 var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+
                 var filteredData = jsonData.filter(row => row.some(filledCell));
 
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
                 var headerRowIndex = filteredData.findIndex((row, index) =>
                   row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
                 );
-                // Fallback
+
                 if (headerRowIndex === -1 || headerRowIndex > 25) {
                   headerRowIndex = 0;
                 }
 
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); 
                 csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
                 return csv;
             } catch (e) {
@@ -46,7 +43,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
@@ -59,7 +56,6 @@
             box-sizing: border-box;
         }
 
-        /* Form Container */
         .form-container {
             background: rgba(255, 255, 255, 0.95);
             padding: 2.5rem;
@@ -73,7 +69,6 @@
             overflow: hidden;
         }
 
-        /* Form Title */
         .form-container h1 {
             color: #1F2937;
             margin-bottom: 2rem;
@@ -82,7 +77,6 @@
             letter-spacing: -0.025em;
         }
 
-        /* Input Fields */
         .form-container .input-group {
             position: relative;
             margin: 1rem 0;
@@ -114,7 +108,6 @@
             animation: shake 0.3s;
         }
 
-        /* Input Labels */
         .form-container label {
             position: absolute;
             left: 16px;
@@ -135,7 +128,6 @@
             padding: 0 4px;
         }
 
-        /* Submit Button */
         .form-container button {
             background: linear-gradient(90deg, #3B82F6 0%, #2563EB 100%);
             color: white;
@@ -162,7 +154,6 @@
             cursor: not-allowed;
         }
 
-        /* Loading Spinner */
         .spinner {
             display: none;
             width: 24px;
@@ -185,7 +176,6 @@
             visibility: hidden;
         }
 
-        /* Status Message */
         .status {
             margin-top: 1rem;
             font-size: 0.875rem;
@@ -206,7 +196,6 @@
             color: #EF4444;
         }
 
-        /* Animations */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-5px); }
@@ -217,7 +206,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive Design */
         @media (max-width: 480px) {
             .form-container {
                 padding: 1.5rem;
@@ -262,7 +250,7 @@
 </div>
 
 <script>
-    // GSAP animations on page load
+
     gsap.from(".form-container", { opacity: 0, y: -50, duration: 1, ease: "power3.out" });
     gsap.from(".input-group", { opacity: 0, y: 20, duration: 0.8, stagger: 0.1, delay: 0.2 });
 
@@ -275,11 +263,9 @@
         const status = document.getElementById("status");
         const button = document.querySelector("button");
 
-        // Reset previous states
         status.classList.remove("success", "error", "show");
         [name, email, address, phone, comments].forEach(input => input.classList.remove("invalid"));
 
-        // Validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^[0-9]{10,}$/;
         let isValid = true;
@@ -311,7 +297,6 @@
             return;
         }
 
-        // Show loading state
         button.disabled = true;
         button.classList.add("loading");
         status.textContent = "Submitting...";
@@ -337,8 +322,7 @@
                 status.classList.remove("error");
                 status.classList.add("success", "show");
                 gsap.to(".form-container", { scale: 1.05, duration: 0.3, repeat: 1, yoyo: true });
-                
-                // Reset form
+
                 [name, email, address, phone, comments].forEach(input => input.value = "");
             } else {
                 status.textContent = "Form submission failed. Please try again.";
