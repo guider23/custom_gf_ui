@@ -69,10 +69,9 @@
 </div>
 
 <script>
-    // GSAP animation on page load
+
     gsap.from(".form-container", { opacity: 0, y: -50, duration: 1 });
 
-    // Function to submit the form data
     async function submitForm() {
         let name = document.getElementById("name").value;
         let email = document.getElementById("email").value;
@@ -80,10 +79,8 @@
         let phone = document.getElementById("phone").value;
         let comments = document.getElementById("comments").value;
 
-        // Regular expression for validating email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
-        // Validate email
+
         if (!emailRegex.test(email)) {
             document.getElementById("status").textContent = "Please enter a valid email address.";
             return;
@@ -106,7 +103,6 @@
                 })
             });
 
-            // Check if the submission was successful
             if (response.ok) {
                 document.getElementById("status").textContent = "Form submitted successfully!";
                 gsap.to(".form-container", { scale: 1.05, duration: 0.3, repeat: 1, yoyo: true });
