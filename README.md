@@ -39,9 +39,9 @@
 </p>
 
 <br>
-Try now : https://bcworks.netlify.app/colormat <br>
+Try now : https://bcworks.in.net/colormat <br>
 A brief instruction is given in deploy link check out 
-(https://bcworks.netlify.app/colormat)
+(https://bcworks.in.net/colormat)
 <br>
 Welcome to the **Color Mat**, a cutting-edge web app that transforms Google Forms into sleek, customizable forms with a **cyberpunk-inspired UI**. Generate dynamic forms, validate inputs in real-time, and deploy to Vercel with a single click—all wrapped in a neon-drenched, futuristic interface.
 
