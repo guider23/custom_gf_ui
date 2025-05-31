@@ -150,7 +150,7 @@ This project is licensed under the **MIT License**.
 
 ## 🙌 Credits
 
-Crafted by *unknown* 
+Crafted by *siddarth* 
 ---
 
 ⭐ **Star this repo** if you found it useful!  
