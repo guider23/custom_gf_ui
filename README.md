@@ -39,6 +39,7 @@
 </p>
 
 <br>
+Try now : https://bcworks.netlify.app/colormat
 A brief instruction is given in deploy link check out 
 (https://bcworks.netlify.app/colormat)
 <br>
