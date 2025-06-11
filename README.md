@@ -142,6 +142,17 @@ Contributions are welcome! To contribute:
 Please follow the **Code of Conduct** and ensure your code adheres to the project’s style guide.
 
 ---
+How to use it ?
+
+
+
+
+
+
+
+
+
+---
 
 ## 📄 License
 
