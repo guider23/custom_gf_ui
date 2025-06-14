@@ -2,7 +2,7 @@
 <h1 align="center">Color Mat</h1>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/d7d48a38-1e10-4e08-ab90-26ee56f878f3" alt="Color Mat Logo" width="300"/>
+<img src="https://github.com/user-attachments/assets/7c51fb99-c45a-4652-a97e-1158cb07342c">
 </p>
 
 <p align="center">
@@ -59,7 +59,7 @@ Welcome to the **Color Mat**, a cutting-edge web app that transforms Google Form
 
 ---
 
-## 🛠 Installation
+## Installation
 
 Get started in minutes:
 
@@ -82,7 +82,7 @@ Get started in minutes:
 
 ---
 
-## 📖 Usage
+## Usage
 
 ### Extract JSON:
 
@@ -107,7 +107,7 @@ For detailed instructions, refer to the help popup.
 
 ---
 
-## 🔧 Tech Stack
+### Tech Stack
 
 | Technology        | Purpose                                      |
 |-------------------|----------------------------------------------|
@@ -120,7 +120,7 @@ For detailed instructions, refer to the help popup.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! To contribute:
 
@@ -160,7 +160,7 @@ This project is licensed under the **MIT License**.
 
 ---
 
-## 🙌 Credits
+## Credits
 
 Crafted by *siddarth* 
 ---
