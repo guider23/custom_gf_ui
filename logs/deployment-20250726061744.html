@@ -1,0 +1,2741 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <link rel="icon" href="https://guider23.github.io/custom_gf_ui/favicon.png">
+    <title>Color Mat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;family=Roboto+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: #0A0A23;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+        body::-webkit-scrollbar-track {
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 10px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00FFFF, #FF00FF);
+            border-radius: 10px;
+            border: 2px solid rgba(20, 20, 40, 0.9);
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #FF00FF, #00FFFF);
+        }
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .form-container {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        .form-container:hover {
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+        }
+        .form-container h1 {
+            color: #00FFFF;
+            margin-bottom: 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        .form-container h1 span {
+            display: inline-block;
+        }
+        .input-group {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #FFFFFF;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 5px rgba(0, 255, 255, 0.2);
+        }
+        .form-container textarea {
+            resize: vertical;
+            min-height: 100px;
+            max-height: 300px;
+        }
+        .form-container input:focus, .form-container textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7), inset 0 0 8px rgba(0, 255, 255, 0.4);
+        }
+        .form-container input:valid, .form-container textarea:valid {
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+        }
+        .form-container input.invalid, .form-container textarea.invalid {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            animation: shake 0.3s;
+        }
+        .form-container label {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            background: transparent;
+            padding: 0;
+        }
+        .form-container input:focus + label,
+        .form-container input:not(:placeholder-shown) + label,
+        .form-container textarea:focus + label,
+        .form-container textarea:not(:placeholder-shown) + label {
+            top: -12px;
+            left: 12px;
+            font-size: 0.8rem;
+            color: #00FFFF;
+            background: rgba(20, 20, 40, 0.9);
+            padding: 0 6px;
+            border-radius: 5px;
+            transform: translateY(0);
+        }
+        .form-container button {
+            background: linear-gradient(45deg, #00FFFF, #FF00FF);
+            color: #FFFFFF;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        .form-container button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+            background: linear-gradient(45deg, #FF00FF, #00FFFF);
+        }
+        .form-container button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .copy-button, .copy-code-btn {
+            background: linear-gradient(45deg, #00FF00, #00FFFF);
+            color: #FFFFFF;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            max-width: 200px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        .copy-button:hover, .copy-code-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+            background: linear-gradient(45deg, #00FFFF, #00FF00);
+        }
+        .spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 4px solid transparent;
+            border-top: 4px solid #00FFFF;
+            border-right: 4px solid #FF00FF;
+            border-radius: 50%;
+            animation: spin 0.8s ease-in-out infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .form-container button.loading .spinner,
+        #deployBtn.loading .spinner {
+            display: block;
+        }
+        .form-container button.loading span,
+        #deployBtn.loading span {
+            visibility: hidden;
+        }
+        .status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #FFFFFF;
+            opacity: 0;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            position: relative;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(20, 20, 40, 0.7);
+            z-index: 1002;
+        }
+        .status.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .status.success {
+            color: #00FF00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+            background: rgba(0, 255, 0, 0.1);
+        }
+        .status.error {
+            color: #FF0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            background: rgba(255, 0, 0, 0.1);
+        }
+        .status.info {
+            color: #00FFFF;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            background: rgba(0, 255, 255, 0.1);
+        }
+        .status a {
+            color: #00FFFF;
+            text-decoration: underline;
+            cursor: pointer;
+            pointer-events: auto;
+            z-index: 1003;
+        }
+        .status a:hover {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        .input-status {
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            margin-top: 5px;
+            display: block;
+            text-align: left;
+        }
+        .input-status.show {
+            opacity: 1;
+        }
+        .input-status.valid {
+            color: #00FF00;
+        }
+        .input-status.invalid {
+            color: #FF0000;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .credit {
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        .credit img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .credit img:hover {
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        #helpBtn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00FFFF, #FF00FF);
+            border: none;
+            border-radius: 50%;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            z-index: 1000;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        #helpBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+        }
+        #historyBtn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00FF00, #00FFFF);
+            border: none;
+            border-radius: 50%;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            z-index: 1000;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        #historyBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+        }
+        #helpPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(40, 40, 60, 0.95));
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: #FFFFFF;
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            text-align: left;
+            box-sizing: border-box;
+        }
+        #helpPopup::-webkit-scrollbar {
+            width: 10px;
+        }
+        #helpPopup::-webkit-scrollbar-track {
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 10px;
+        }
+        #helpPopup::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00FFFF, #FF00FF);
+            border-radius: 10px;
+            border: 2px solid rgba(20, 20, 40, 0.9);
+        }
+        #helpPopup::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #FF00FF, #00FFFF);
+        }
+        #helpPopup.show {
+            display: block;
+        }
+        #helpPopup h2 {
+            color: #00FFFF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            text-align: center;
+        }
+        #helpPopup p, #helpPopup li {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin: 0.75rem 0;
+            position: relative;
+        }
+        #helpPopup ul {
+            list-style: disc;
+            margin: 1.5rem 0 1.5rem 2.5rem;
+            padding: 0;
+        }
+        #helpPopup ul ul {
+            list-style: circle;
+            margin: 0.75rem 0 0.75rem 2.5rem;
+        }
+        #helpPopup li {
+            margin-bottom: 0.75rem;
+        }
+        #helpPopup strong {
+            display: block;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            color: #00FFFF;
+        }
+        #helpPopup .code-container {
+            padding: 10px;
+            margin: 1rem 0;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: #00FFFF;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            transition: background 0.3s ease;
+        }
+        #helpPopup .code-container:hover {
+            background: rgba(0, 255, 255, 0.05);
+        }
+        #closeHelpBtn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        #closeHelpBtn:hover {
+            opacity: 1;
+        }
+        #historyPanel {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: rgba(20, 20, 40, 0.95);
+            padding: 2rem;
+            border-left: 2px solid rgba(0, 255, 255, 0.2);
+            box-shadow: -10px 0 30px rgba(0, 255, 255, 0.3);
+            color: #FFFFFF;
+            z-index: 1001;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+        }
+        #historyPanel::-webkit-scrollbar {
+            width: 10px;
+        }
+        #historyPanel::-webkit-scrollbar-track {
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 10px;
+        }
+        #historyPanel::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00FFFF, #FF00FF);
+            border-radius: 10px;
+            border: 2px solid rgba(20, 20, 40, 0.9);
+        }
+        #historyPanel::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #FF00FF, #00FFFF);
+        }
+        #historyPanel.show {
+            display: block;
+        }
+        #historyPanel h2 {
+            color: #00FFFF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            text-align: center;
+        }
+        #historyPanel ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #historyPanel li {
+            margin-bottom: 1rem;
+            padding: 10px;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #historyPanel li a {
+            color: #00FFFF;
+            text-decoration: underline;
+            word-break: break-all;
+            font-size: 0.9rem;
+        }
+        #historyPanel li button {
+            background: linear-gradient(45deg, #00FF00, #00FFFF);
+            color: #FFFFFF;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        #historyPanel li button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+        }
+        #closeHistoryBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        #closeHistoryBtn:hover {
+            opacity: 1;
+        }
+        #helpOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #helpOverlay.show {
+            display: block;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        }
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 2rem;
+            }
+            .form-container h1 {
+                font-size: 1.8rem;
+            }
+            .form-container button {
+                font-size: 1rem;
+            }
+            #helpPopup {
+                padding: 2rem;
+                max-height: 85vh;
+            }
+            #helpPopup h2 {
+                font-size: 1.6rem;
+            }
+            #helpPopup ul {
+                margin-left: 1.5rem;
+            }
+            #helpPopup ul ul {
+                margin-left: 1.5rem;
+            }
+            #helpPopup::-webkit-scrollbar {
+                width: 8px;
+            }
+            #historyPanel {
+                width: 80%;
+            }
+            #historyPanel h2 {
+                font-size: 1.5rem;
+            }
+            #historyPanel::-webkit-scrollbar {
+                width: 8px;
+            }
+            .credit {
+                font-size: 0.8rem;
+            }
+            .credit img {
+                width: 25px;
+                height: 25px;
+            }
+        }
+    </style>
+<link rel="stylesheet" type="text/css" href="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/styles/inject.css"><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/utils/constants.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script></head><body class="vsc-domain-colormat-netlify-app vsc-initialized"><div id="vsc-constants-loaded" style="display: none;">Constants loaded at 2025-07-26T06:16:47.690Z</div><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/utils/logger.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/utils/debug-helper.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/utils/dom-utils.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/utils/event-manager.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/core/storage-manager.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/core/settings.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/observers/media-observer.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/observers/mutation-observer.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/core/action-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/core/video-controller.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/ui/controls.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/ui/drag-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/ui/shadow-dom.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/site-handlers/base-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/site-handlers/netflix-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/site-handlers/youtube-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/site-handlers/facebook-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/site-handlers/amazon-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/site-handlers/apple-handler.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/site-handlers/index.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><script src="chrome-extension://nffaoalbilbmmfgbnbgppjihopabppdk/src/content/inject.js">
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script><div id="vsc-test-indicator" style="display: none;"></div>
+
+    <canvas id="particles" width="1536" height="748"></canvas>
+    <div class="form-container" data-tilt="" data-tilt-max="25" data-tilt-speed="600" data-tilt-perspective="800" data-tilt-glare="true" data-tilt-max-glare="0.5" style="will-change: transform; translate: none; rotate: none; scale: none; transform: perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); opacity: 1;">
+        <h1 id="form-title"><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">S</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">U</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">B</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">M</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">I</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">T</span> <span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Y</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">O</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">U</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">R</span> <span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">D</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">E</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">T</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">A</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">I</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">L</span><span style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">S</span></h1>
+        
+        <div class="form-content"><div class="input-group"><input type="text" id="2005620554" name="2005620554" placeholder="" required="" aria-label="Name" data-entry="entry.2005620554"><label for="2005620554">Name</label></div><div class="input-group"><input type="text" id="1045781291" name="1045781291" placeholder="" required="" aria-label="Email" data-entry="entry.1045781291"><label for="1045781291">Email</label></div><div class="input-group"><input type="text" id="1065046570" name="1065046570" placeholder="" required="" aria-label="Address" data-entry="entry.1065046570"><label for="1065046570">Address</label></div><div class="input-group"><input type="text" id="1166974658" name="1166974658" placeholder="" required="" aria-label="Phone number" data-entry="entry.1166974658"><label for="1166974658">Phone number</label></div><div class="input-group"><input type="text" id="839337160" name="839337160" placeholder="" required="" aria-label="Comments" data-entry="entry.839337160"><label for="839337160">Comments</label></div><button aria-label="Submit form"><span>Submit</span><div class="spinner"></div></button><input type="hidden" id="form-link-hidden" value="https://docs.google.com/forms/d/e/1FAIpQLSc7TEysfaGkWK8vH6UhaH487KEE6JV8eMPf0OK4HtnjpHRd7A/formResponse"><input type="hidden" id="form-link-hidden" value="https://docs.google.com/forms/d/e/1FAIpQLSc7TEysfaGkWK8vH6UhaH487KEE6JV8eMPf0OK4HtnjpHRd7A/formResponse"></div>
+        <div class="credit">
+            <img src="https://github.com/guider23.png" alt="Siddarth's GitHub profile image">
+            <span>Made by Siddarth</span>
+        </div>
+    <div class="js-tilt-glare" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; border-radius: inherit;"><div class="js-tilt-glare-inner" style="position: absolute; top: 50%; left: 50%; pointer-events: none; background-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%); transform: rotate(180deg) translate(-50%, -50%); transform-origin: 0% 0%; opacity: 0; width: 1402px; height: 1402px;"></div></div></div>
+    <button id="helpBtn" aria-label="Show help instructions">?</button>
+    
+    <div id="helpOverlay" class=""></div>
+    <div id="helpPopup" role="dialog" aria-labelledby="helpTitle" class="" style="translate: none; rotate: none; scale: none; transform: translate(-50%, -50%) translate(0px, -0.2px) scale(0.8, 0.8); opacity: 0;">
+        <button id="closeHelpBtn" aria-label="Close help popup">✕</button>
+        <h2 id="helpTitle">How to Use This Form Generator</h2>
+        <p>This tool allows you to create and deploy a custom form that submits data to a Google Form.</p>
+        <ul>
+            <li><strong>Step 1: Paste your Google Form Link</strong>
+                <ul>
+                    <li>Copy the link to your Google Form (e.g., <code>https://docs.google.com/forms/d/e/.../viewform</code>).</li>
+                    <li>Paste it into the "Google Form Link" field.</li>
+                </ul>
+            </li>
+            <li><strong>Step 2: Copy the JSON Extraction Code</strong>
+                <ul>
+                    <li>Click the "Copy Code" button below to copy the JSON extraction code.</li>
+                    <li><button class="copy-code-btn" onclick="copyJsonCode()">Copy Code</button></li>
+                    <li><div class="code-container" id="json-code">
+(function() {
+  setTimeout(() =&gt; {
+    let dataMapping = [];
+    try {
+      if (window.FB_PUBLIC_LOAD_DATA_ &amp;&amp; Array.isArray(FB_PUBLIC_LOAD_DATA_[1][1])) {
+        dataMapping = FB_PUBLIC_LOAD_DATA_[1][1].map(item =&gt; ({
+          id: item[4][0][0],
+          question: item[1]
+        }));
+      }
+    } catch (e) {
+      console.log('Error parsing FB_PUBLIC_LOAD_DATA_:', e.message);
+    }
+    const results = [];
+    document.querySelectorAll('input, select, textarea').forEach(element =&gt; {
+      const entryName = element.getAttribute('name') || '';
+      if (entryName.startsWith('entry.')) {
+        const id = entryName.split('.')[1];
+        const mapping = dataMapping.find(m =&gt; m.id === parseInt(id));
+        if (mapping) {
+          results.push({ id, question: mapping.question });
+        }
+      }
+    });
+    console.log(JSON.stringify(results, null, 2));
+  }, 3000); 
+})();
+                    </div></li>
+                    <li>This code will run in the browser console to generate the JSON data needed for the form.</li>
+                </ul>
+            </li>
+            <li><strong>Step 3: Extract JSON Data</strong>
+                <ul>
+                    <li>Go to your Google Form link, press <code>Ctrl+Shift+I</code> to open the developer tools, and navigate to the Console tab.</li>
+                    <li>If prompted, type <code>allow pasting</code> and press Enter.</li>
+                    <li>Paste the copied code into the console and press Enter.</li>
+                    <li>After a few seconds, the console will output a JSON array of your form fields. Copy this JSON and paste it into the "JSON Data" field.</li>
+                </ul>
+            </li>
+            <li><strong>Step 4: Generate Form</strong>
+                <ul>
+                    <li>Click the "Generate Form" button to create the form based on your JSON.</li>
+                    <li>The form will appear with input fields matching your JSON data.</li>
+                </ul>
+            </li>
+            <li><strong>Step 5: Deploy and Share</strong>
+                <ul>
+                    <li>If the form fields look correct, click the "Deploy" button to host your form on GitHub Pages.</li>
+                    <li>Once deployed, view the deployment URL in the history panel (click the 📜 button).</li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>Note</strong></p>
+        <p>Google Form Settings &gt; Response &gt; Turn off Limit to One Response. Ensure your Google Form is set to accept responses and the entry IDs in your JSON match the form's fields.</p>
+    </div>
+    
+    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            try {
+                                VanillaTilt.init(document.querySelector('.form-container'), {
+                                    max: 25,
+                                    speed: 600,
+                                    perspective: 800,
+                                    glare: true,
+                                    'max-glare': 0.5
+                                });
+                            } catch (e) {}
+                            const helpBtn = document.getElementById('helpBtn');
+                            const helpPopup = document.getElementById('helpPopup');
+                            const helpOverlay = document.getElementById('helpOverlay');
+                            const closeHelpBtn = document.getElementById('closeHelpBtn');
+                            function showHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                helpPopup.classList.add('show');
+                                helpOverlay.classList.add('show');
+                                gsap.fromTo(helpPopup, 
+                                    { opacity: 0, scale: 0.8 }, 
+                                    { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+                                );
+                                helpPopup.focus();
+                            }
+                            function hideHelpPopup() {
+                                if (!helpPopup || !helpOverlay) return;
+                                gsap.to(helpPopup, {
+                                    opacity: 0,
+                                    scale: 0.8,
+                                    duration: 0.3,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        helpPopup.classList.remove('show');
+                                        helpOverlay.classList.remove('show');
+                                    }
+                                });
+                            }
+                            if (helpBtn) helpBtn.addEventListener('click', showHelpPopup);
+                            if (closeHelpBtn) closeHelpBtn.addEventListener('click', hideHelpPopup);
+                            if (helpOverlay) helpOverlay.addEventListener('click', hideHelpPopup);
+                            if (helpPopup) {
+                                helpPopup.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Escape') hideHelpPopup();
+                                });
+                            }
+                            function copyJsonCode() {
+                                const codeElement = document.getElementById('json-code');
+                                if (!codeElement) return;
+                                const codeText = codeElement.textContent.trim();
+                                navigator.clipboard.writeText(codeText).then(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'JSON code copied to clipboard!';
+                                        statusElement.className = 'status show success';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 3000);
+                                    }
+                                }).catch(() => {
+                                    const statusElement = document.getElementById('status');
+                                    if (statusElement) {
+                                        statusElement.innerHTML = '';
+                                        statusElement.textContent = 'Failed to copy JSON code. Please copy manually.';
+                                        statusElement.className = 'status show error';
+                                        setTimeout(() => {
+                                            statusElement.classList.remove('show');
+                                            statusElement.innerHTML = '';
+                                            statusElement.className = 'status';
+                                        }, 5000);
+                                    }
+                                });
+                            }
+                            const copyCodeBtn = document.querySelector('.copy-code-btn');
+                            if (copyCodeBtn) copyCodeBtn.addEventListener('click', copyJsonCode);
+                        });
+                    </script>
+
+
+<chatgpt-sidebar data-gpts-theme="light"></chatgpt-sidebar></body></html>
