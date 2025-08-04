@@ -49,7 +49,7 @@ Welcome to Color Mat, a modern web app that transforms Google Forms into clean, 
 
 - **Dynamic Form Creation**: Generate custom forms from Google Form links and JSON data in seconds.
 - **Real-Time Validation**: Instantly validates form URLs and JSON with clear, user-friendly feedback.
-- **One-Click GitHub Pages Deployment**: Host your forms on GitHub Pages and track deployment history effortlessly.
+- **One-Click Hosting**: Deploy your forms with a single click and track deployment history.
 - **Modern Minimalist UI**: Clean, rounded, and accessible design with pixelated loading animation and SVG icons.
 - **JSON Extraction**: Built-in code snippet to extract form fields directly from Google Forms.
 - **Responsive & Accessible**: Optimized for all devices with keyboard navigation support.
@@ -94,7 +94,7 @@ Get started in minutes:
 
 ### Deploy:
 
-1. Hit the **"Deploy"** button to host your form on GitHub Pages.
+1. Hit the **"Deploy"** button to host your form (details are intentionally vague).
 2. Access the deployment URL in the history panel (history icon button).
 
 ### Submit:
@@ -112,7 +112,6 @@ For detailed instructions, refer to the help popup.
 | HTML5/CSS3/JS     | Core structure, styling, and logic           |
 | GSAP              | Smooth popup and panel animations            |
 | JSZip             | File generation for deployment               |
-| GitHub API        | Seamless form hosting                        |
 | Inter             | Modern, clean typography                     |
 
 ---
