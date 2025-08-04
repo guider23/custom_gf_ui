@@ -2,7 +2,6 @@
 <h1 align="center">Color Mat</h1>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/7c51fb99-c45a-4652-a97e-1158cb07342c">
 </p>
 
 <p align="center">
