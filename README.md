@@ -1,4 +1,3 @@
-
 <h1 align="center">Color Mat</h1>
 
 <p align="center">
@@ -42,7 +41,7 @@ Try now : https://bcworks.in.net/colormat <br>
 A brief instruction is given in deploy link check out 
 (https://bcworks.in.net/colormat)
 <br>
-Welcome to the Color Mat, a cutting-edge web app that transforms Google Forms into sleek, customizable forms with a cyberpunk-inspired UI. Generate dynamic forms, validate inputs in real-time, and deploy to Vercel with a single click—all wrapped in a neon-drenched, futuristic interface.
+Welcome to Color Mat, a modern web app that transforms Google Forms into clean, customizable forms with a minimalist, professional UI. Generate dynamic forms, validate inputs in real-time, and deploy to GitHub Pages with a single click—all in a fast, accessible interface.
 
 ---
 
@@ -50,10 +49,10 @@ Welcome to the Color Mat, a cutting-edge web app that transforms Google Forms in
 
 - **Dynamic Form Creation**: Generate custom forms from Google Form links and JSON data in seconds.
 - **Real-Time Validation**: Instantly validates form URLs and JSON with clear, user-friendly feedback.
-- **One-Click Vercel Deployment**: Host your forms on Vercel and track deployment history effortlessly.
-- **Cyberpunk Aesthetic**: Neon gradients, particle animations, and 3D tilt effects powered by GSAP and Vanilla Tilt.
+- **One-Click GitHub Pages Deployment**: Host your forms on GitHub Pages and track deployment history effortlessly.
+- **Modern Minimalist UI**: Clean, rounded, and accessible design with pixelated loading animation and SVG icons.
 - **JSON Extraction**: Built-in code snippet to extract form fields directly from Google Forms.
-- **Responsive & Accessible**: Glassmorphic UI optimized for all devices with keyboard navigation support.
+- **Responsive & Accessible**: Optimized for all devices with keyboard navigation support.
 - **Deployment History**: View and copy past deployment URLs via an intuitive history panel.
 
 ---
@@ -85,7 +84,7 @@ Get started in minutes:
 
 ### Extract JSON:
 
-1. Open the help popup (`?` button) and copy the JSON extraction code.
+1. Open the help popup (help icon button) and copy the JSON extraction code.
 2. Paste it into your Google Form’s browser console to get the form’s field data.
 
 ### Generate Form:
@@ -95,8 +94,8 @@ Get started in minutes:
 
 ### Deploy:
 
-1. Hit the **"Deploy"** button to host your form on Vercel.
-2. Access the deployment URL in the history panel (`📜` button).
+1. Hit the **"Deploy"** button to host your form on GitHub Pages.
+2. Access the deployment URL in the history panel (history icon button).
 
 ### Submit:
 
@@ -111,11 +110,10 @@ For detailed instructions, refer to the help popup.
 | Technology        | Purpose                                      |
 |-------------------|----------------------------------------------|
 | HTML5/CSS3/JS     | Core structure, styling, and logic           |
-| GSAP              | Smooth animations                            |
-| Vanilla Tilt      | 3D tilt effects for interactivity            |
+| GSAP              | Smooth popup and panel animations            |
 | JSZip             | File generation for deployment               |
-| Vercel API        | Seamless form hosting                        |
-| Orbitron/Roboto Mono | Cyberpunk-inspired typography             |
+| GitHub API        | Seamless form hosting                        |
+| Inter             | Modern, clean typography                     |
 
 ---
 
@@ -141,15 +139,7 @@ Contributions are welcome! To contribute:
 Please follow the **Code of Conduct** and ensure your code adheres to the project’s style guide.
 
 ---
-How to use it ?
-
-
-
-
-
-
-
-
+How to use it?
 
 ---
 
@@ -164,5 +154,5 @@ This project is licensed under the **MIT License**.
 Crafted by *siddarth* 
 ---
 
-⭐ **Star this repo** if you found it useful!  
+Star this repo if you found it useful!  
 Got questions? Open an issue or reach out on GitHub.
